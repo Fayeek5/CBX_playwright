@@ -1,6 +1,7 @@
 import { Page, expect } from '@playwright/test';
 import { search } from '../helpers/search-helper';
 import { demoPause } from '../helpers/demo-helper';
+import { exportSelectedRows } from '../helpers/export-helper';
 
 export async function runForwarder(page: Page) {
 
@@ -56,12 +57,73 @@ export async function runForwarder(page: Page) {
   console.log('Company Name:', companyName);
   console.log('Forwarder ID:', forwarderId);
 
-  await search(page, companyName!);
+  await search(page, forwarderId);
 
   await expect(
+    page.locator(
+      '[col-id="forwarderCode"] .text-wrapper'
+    ).first()
+  ).toContainText(forwarderId);
+
+  const forwarderLink =
     page.locator('[col-id="companyName"] a')
+      .first();
+
+  await expect(
+    page.locator('[col-id="forwarderCode"] .text-wrapper')
       .first()
-  ).toContainText(companyName!);
+  ).toContainText(forwarderId);
+
+  await page.waitForTimeout(2000);
+
+  await page.getByLabel('', {
+    exact: true
+  }).nth(1).check();
+
+  const download =
+    await exportSelectedRows(page);
+
+  console.log(
+    'Export file:',
+    download.suggestedFilename()
+  );
+
+  await forwarderLink.click();
+
+  await demoPause(page);
+
+  await expect(page)
+    .toHaveURL(/document\/master\/forwarder/i);
+
+  await expect(page.url())
+    .toContain(forwarderId);
+
+  await expect(
+    page.getByRole('heading', {
+      name: companyName!
+    })
+  ).toBeVisible();
+
+  await expect(
+    page.getByText(forwarderId, {
+      exact: true
+    })
+  ).toBeVisible();
+
+  console.log(
+    'Verified Company Name:',
+    companyName
+  );
+
+  console.log(
+    'Verified Forwarder ID:',
+    forwarderId
+  );
+
+  console.log(
+    'Opened Forwarder URL:',
+    page.url()
+  );
 
   console.log(
     'Forwarder completed:',

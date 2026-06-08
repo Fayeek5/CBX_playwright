@@ -1,4 +1,7 @@
 import { Page, expect } from '@playwright/test';
+import { search } from '../helpers/search-helper';
+import { exportSelectedRows } from '../helpers/export-helper';
+import { demoPause } from '../helpers/demo-helper';
 
 export async function runFactory(page: Page) {
 
@@ -15,28 +18,98 @@ export async function runFactory(page: Page) {
   await expect(page)
     .toHaveURL(/factActiveView/);
 
+  await demoPause(page);
+
   await expect(
     page.locator('.total-record-indicator')
   ).toContainText('Records', {
     timeout: 30000
   });
 
+  const factoryLink =
+    page.locator('[col-id="businessName"] a')
+      .first();
+
   const companyName = (
-    await page.locator('[col-id="businessName"] a')
-      .first()
-      .textContent()
+    await factoryLink.textContent()
   )?.trim();
 
-  const companyLink = await page
-    .locator('[col-id="businessName"] a')
-    .first()
-    .getAttribute('href');
+  const href =
+    await factoryLink.getAttribute('href');
 
   const factoryId =
-    companyLink?.match(/\/fact\/(.*?)\//)?.[1];
+    href?.match(/\/fact\/(.*?)\//)?.[1];
 
-  expect(factoryId).toBeTruthy();
-  expect(companyName).toBeTruthy();
+  console.log('Factory ID:', factoryId);
+  console.log('Company Name:', companyName);
+
+  await search(
+    page,
+    companyName!,
+    2
+  );
+
+  await expect(factoryLink)
+    .toContainText(companyName!);
+
+  console.log(
+    'Verified search:',
+    companyName
+  );
+
+  await page.mouse.click(1200, 200);
+  await page.keyboard.press('Escape');
+
+  await demoPause(page);
+
+  await page.getByLabel('', {
+    exact: true
+  }).nth(1).check();
+
+  const download =
+    await exportSelectedRows(page);
+
+  console.log(
+    'Export file:',
+    download.suggestedFilename()
+  );
+
+  await factoryLink.click();
+
+  await demoPause(page);
+
+  await expect(page)
+    .toHaveURL(/document\/master\/fact/i);
+
+  await expect(page.url())
+    .toContain(factoryId!);
+
+  await expect(
+    page.getByRole('heading', {
+      name: companyName!
+    })
+  ).toBeVisible();
+
+  await expect(
+    page.getByText(factoryId!, {
+      exact: true
+    })
+  ).toBeVisible();
+
+  console.log(
+    'Verified Company Name:',
+    companyName
+  );
+
+  console.log(
+    'Verified Factory ID:',
+    factoryId
+  );
+
+  console.log(
+    'Opened Factory URL:',
+    page.url()
+  );
 
   console.log(
     'Factory completed:',
