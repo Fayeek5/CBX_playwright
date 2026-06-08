@@ -63,17 +63,12 @@ export async function runVendor(page: Page) {
 
   await demoPause(page);
 
-  const vendorLink = page
-    .locator('[col-id="businessName"] a')
-    .first();
-
-  const vendorName = (
-    await vendorLink.textContent()
-  )?.trim();
-
-  console.log('Vendor Name:', vendorName);
-
-  await vendorLink.click();
+  // Open document
+  await page.locator(
+    'div[col-id="vendorCode"] .text-wrapper'
+  )
+    .first()
+    .click();
 
   await demoPause(page);
 
@@ -82,11 +77,6 @@ export async function runVendor(page: Page) {
 
   await expect(page.url())
     .toContain(vendorId);
-
-  console.log(
-    'Verified Vendor Name:',
-    vendorName
-  );
 
   console.log(
     'Opened Vendor URL:',
