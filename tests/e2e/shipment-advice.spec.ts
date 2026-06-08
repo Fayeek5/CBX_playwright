@@ -5,130 +5,94 @@ test.use({
   storageState: 'fixtures/.auth/user.json'
 });
 
-test('GET Forwarder', async ({ page }) => {
+test('GET Shipment Advice', async ({ page }) => {
 
   await page.goto('https://oi-uat.tradebeyond.com/home');
-
-  await page.waitForLoadState('networkidle');
-
-  await page.waitForTimeout(5000);
   await page.waitForTimeout(5000);
 
-  await page.locator('button:nth-child(9)').click();
+  await page.getByRole('button')
+    .filter({ hasText: /^$/ })
+    .nth(5)
+    .click();
 
   await page.getByRole('link', {
-    name: 'Forwarders'
+    name: 'Shipment Advices'
   }).click();
-
-  await expect(page)
-    .toHaveURL(/forwView/);
 
   await page.waitForTimeout(5000);
 
-  // Records
   const recordsText = (
     await page.locator('.total-record-indicator')
       .innerText()
   ).trim();
 
-  console.log('Forwarder Records:', recordsText);
+  console.log(
+    'Shipment Advice Records:',
+    recordsText
+  );
 
   expect(recordsText)
     .toContain('Records');
 
-  // Capture Company Name
-  const companyName = (
-    await page.locator('[col-id="companyName"] a')
+  const shipmentAdviceNo = (
+    await page.locator(
+      '[col-id="shipmentAdviceNo"] a'
+    )
       .first()
       .textContent()
   )?.trim();
 
-  // Capture Forwarder ID
-  const forwarderId = (
-    await page.locator(
-      '[col-id="forwarderCode"] .text-wrapper'
-    )
-      .first()
-      .innerText()
-  ).trim();
+  console.log(
+    'Shipment Advice No:',
+    shipmentAdviceNo
+  );
 
-  console.log('Company Name:', companyName);
-  console.log('Forwarder ID:', forwarderId);
+  expect(shipmentAdviceNo)
+    .toBeTruthy();
 
-  expect(companyName).toBeTruthy();
-  expect(forwarderId).toBeTruthy();
-
-  // Close overlay
   await page.mouse.click(1200, 200);
 
-  // Search by Company Name
+  // Search
   await page.getByRole('button')
     .filter({ hasText: 'filter_alt' })
-    .first()
+    .nth(1)
     .click();
 
   await page.getByPlaceholder('Filter...')
-    .fill(companyName!);
+    .fill(shipmentAdviceNo!);
 
   await page.getByRole('button', {
     name: 'Apply'
   }).click();
 
   await expect(
-    page.locator('[col-id="companyName"] a')
-      .first()
-  ).toContainText(companyName!);
-
-  console.log(
-    'Verified Company search:',
-    companyName
-  );
-
-  await page.waitForTimeout(5000);
-
-  // Clear Search
-  await page.getByText('Clear Search.')
-    .click();
-
-  // Search by Forwarder ID
-  await page.getByRole('button')
-    .filter({ hasText: 'filter_alt' })
-    .nth(1)
-    .click();
-
-  await page.getByPlaceholder('Filter...')
-    .fill(forwarderId);
-
-  await page.getByPlaceholder('Filter...')
-    .press('Enter');
-
-  await expect(
     page.locator(
-      '[col-id="forwarderCode"] .text-wrapper'
+      '[col-id="shipmentAdviceNo"] a'
     ).first()
-  ).toContainText(forwarderId);
+  ).toContainText(shipmentAdviceNo!);
 
   console.log(
-    'Verified Forwarder ID search:',
-    forwarderId
+    'Verified Shipment Advice search:',
+    shipmentAdviceNo
   );
 
   await page.waitForTimeout(5000);
 
   // Select row
-  await page.getByLabel('', { exact: true })
-    .nth(1)
-    .check();
+  await page.getByLabel('', {
+    exact: true
+  }).nth(1).check();
 
   await page.waitForTimeout(5000);
 
-  // Export
+  // Export icon
   await page.locator(
     'app-export-data > .edit-toggle'
   ).click();
 
   await page.waitForTimeout(3000);
 
+  // Selected Rows Only
   await page.getByText(
     'Selected Rows Only'
   ).click();
@@ -166,20 +130,16 @@ test('GET Forwarder', async ({ page }) => {
       { header: 1 }
     );
 
-  const exportText =
-    JSON.stringify(data);
-
-  expect(exportText)
-    .toContain(forwarderId);
+  expect(data.length)
+    .toBeGreaterThan(1);
 
   console.log(
-    'Verified Forwarder ID in export:',
-    forwarderId
+    'Verified export contains data'
   );
 
   // Open document
   await page.locator(
-    '[col-id="companyName"] a'
+    '[col-id="shipmentAdviceNo"] a'
   ).first().click();
 
   await page.waitForLoadState(
@@ -190,16 +150,16 @@ test('GET Forwarder', async ({ page }) => {
 
   await expect(page)
     .toHaveURL(
-      /\/document\/master\/forwarder\//
+      /\/document\/order\/shipmentAdvice\//
     );
 
   await expect(page)
     .toHaveURL(
-      new RegExp(forwarderId)
+      new RegExp(shipmentAdviceNo!)
     );
 
   console.log(
-    'Opened Forwarder URL:',
+    'Opened Shipment Advice URL:',
     page.url()
   );
 });

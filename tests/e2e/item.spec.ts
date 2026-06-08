@@ -37,7 +37,7 @@ test.use({
   storageState: 'fixtures/.auth/user.json'
 });
 
-test('Item module smoke test', async ({ page }) => {
+test('GET Item', async ({ page }) => {
 
 
 
@@ -63,6 +63,8 @@ await page.getByRole('link', { name: 'Items' }).click();
 
 // Verify listing loaded
 await expect(page).toHaveURL(/itemActiveView/);
+
+  await page.waitForTimeout(5000);
   await page.waitForTimeout(5000);
 
   // Dismiss sidenav overlay
@@ -75,6 +77,8 @@ await expect(page).toHaveURL(/itemActiveView/);
 
   // Verify listing loaded
   await expect(page).toHaveURL(/itemActiveView/);
+
+  await page.waitForTimeout(5000);
   await expect(page.getByText('Items - Active')).toBeVisible();
 
   // Verify record count visible
@@ -147,6 +151,8 @@ await expect(page).toHaveURL(/itemActiveView/);
   await page.locator('[col-id="itemNo"] a').first().click();
 
   await page.waitForURL(/document\/product\/item/);
+
+  await page.waitForTimeout(5000);
 
   // Verify URL contains same Item No
   expect(page.url()).toContain(itemNo!);

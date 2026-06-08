@@ -12,16 +12,16 @@ export default defineConfig({
   testDir: './tests',
 
   // Run files in parallel; within a file tests run serially by default.
-  fullyParallel: true,
+  fullyParallel: false,
 
   // Fail the build on CI if test.only is accidentally left in source.
   forbidOnly: CI,
 
   // Retry on CI to absorb flakiness; no retries locally for fast feedback.
-  retries: CI ? 2 : 0,
+  retries: 1,
 
   // Limit workers on CI for stability; use all cores locally.
-  workers: CI ? 2 : undefined,
+  workers: 1,
 
   // Global timeouts.
   timeout: 60_000,

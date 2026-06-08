@@ -98,7 +98,7 @@ test('GET Factory', async ({ page }) => {
     page.waitForEvent('download');
 
   await page.getByRole('button', {
-    name: 'export'
+    name: 'Export'
   }).click();
 
   const download =

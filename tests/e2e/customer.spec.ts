@@ -112,20 +112,26 @@ test('GET Customer', async ({ page }) => {
     .nth(1)
     .check();
 
+  await page.waitForTimeout(5000);
+
   // Export
   await page.locator(
     'app-export-data > .edit-toggle'
   ).click();
 
+  await page.waitForTimeout(3000);
+
   await page.getByText(
     'Selected Rows Only'
   ).click();
+
+  await page.waitForTimeout(3000);
 
   const downloadPromise =
     page.waitForEvent('download');
 
   await page.getByRole('button', {
-    name: 'export'
+    name: 'Export'
   }).click();
 
   const download =

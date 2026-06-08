@@ -77,20 +77,26 @@ test('GET Vendor Purchase Order', async ({ page }) => {
     .nth(1)
     .check();
 
+  await page.waitForTimeout(5000);
+
   // Export
   await page.locator(
     'app-export-data > .edit-toggle'
   ).click();
 
+  await page.waitForTimeout(3000);
+
   await page.getByText(
     'Selected Rows Only'
   ).click();
+
+  await page.waitForTimeout(3000);
 
   const downloadPromise =
     page.waitForEvent('download');
 
   await page.getByRole('button', {
-    name: 'export'
+    name: 'Export'
   }).click();
 
   const download =
@@ -119,11 +125,6 @@ test('GET Vendor Purchase Order', async ({ page }) => {
 
   const exportText =
     JSON.stringify(data);
-
-  console.log(
-    'EXPORT DATA:',
-    JSON.stringify(data, null, 2)
-  );
 
   expect(data.length)
     .toBeGreaterThan(1);
