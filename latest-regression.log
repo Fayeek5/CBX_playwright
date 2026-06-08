@@ -1,0 +1,105 @@
+========================================
+LOGIN ONCE
+========================================
+
+Running 1 test using 1 worker
+
+  ✓  1 [setup] › tests/auth.setup.ts:14:6 › authenticate (12.2s)
+
+  1 passed (12.7s)
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report[39m
+[36m[39m
+
+========================================
+RUNNING ALL GET MODULES
+========================================
+
+Running 10 tests using 1 worker
+
+Customer Records: 69 Records
+Customer Name: yan cusomer1
+Customer ID: yanCust1
+Verified Customer Name search: yan cusomer1
+Verified Customer ID search: yanCust1
+Export file: cust-custActiveView.xlsx
+Verified Customer ID in export: yanCust1
+Opened Customer URL: https://oi-uat.tradebeyond.com/document/master/cust/yanCust1/1
+  ✓   1 [chromium] › tests/e2e/customer.spec.ts:8:5 › GET Customer (46.1s)
+Factory Audit Records: 136 Records
+Report No: FA2606-000018
+Verified Report search: FA2606-000018
+Export file: factAudit-factAuditView.xlsx
+Verified export contains data
+Opened Factory Audit URL: https://oi-uat.tradebeyond.com/document/quality/factAudit/FA2606-000018/1
+  ✓   2 [chromium] › tests/e2e/factory-audit.spec.ts:8:5 › GET Factory Audit (45.7s)
+Factory ID: 027216
+Company Name: MING XING PRODUCTION TRADING IMPORT & EXPORT COMPANY LIMITED
+Expected Short Name: MING XING
+Verified search result: MING XING PRODUCTION TRADING IMPORT & EXPORT COMPANY LIMITED
+Export file: fact-factActiveView.xlsx
+Verified Factory ID in export: 027216
+Opened Factory URL: https://oi-uat.tradebeyond.com/document/master/fact/027216/22
+  ✓   3 [chromium] › tests/e2e/factory.spec.ts:8:5 › GET Factory (28.9s)
+Forwarder Records: 116 Records
+Company Name: Global Transport Services
+Forwarder ID: FWDR000044
+Verified Company search: Global Transport Services
+Verified Forwarder ID search: FWDR000044
+Export file: forwarder-forwView.xlsx
+Verified Forwarder ID in export: FWDR000044
+Opened Forwarder URL: https://oi-uat.tradebeyond.com/document/master/forwarder/FWDR000044/3
+  ✓   4 [chromium] › tests/e2e/forwarder.spec.ts:8:5 › GET Forwarder (56.3s)
+Inspection Booking Records: 10000 Records
+Inspection Booking No: QCB2605-vpo-CPN05131-005654
+Verified Booking search: QCB2605-vpo-CPN05131-005654
+Export file: inspectBooking-inspectBookingActiveView.xlsx
+Verified export contains data
+Opened Inspection Booking URL: https://oi-uat.tradebeyond.com/document/quality/inspectBooking/QCB2605-005654/3
+  ✓   5 [chromium] › tests/e2e/inspection-booking.spec.ts:8:5 › GET Inspection Booking (38.2s)
+Inspection Report Records: 10000 Records
+Inspection Report No: QCR2606-000012
+Verified Report search: QCR2606-000012
+Export file: inspectReport-inspectReportActiveView.xlsx
+Verified export contains data
+Opened Inspection Report URL: https://oi-uat.tradebeyond.com/document/quality/inspectReport/QCR2606-000012/5
+  ✓   6 [chromium] › tests/e2e/inspection-report.spec.ts:8:5 › GET Inspection Report (50.8s)
+Export file: item-itemActiveView.xlsx
+Export path: /Users/ummarfaeeque/Projects/cbx-playwright/test-results/.playwright-artifacts-0/f400b039-073b-4ee6-a442-b37c8ea66123
+Selected Item: ITM2605-001316
+Verified Item No: ITM2605-001316
+Opened Item URL: https://oi-uat.tradebeyond.com/document/product/item/ITM2605-001316/4
+  ✓   7 [chromium] › tests/e2e/item.spec.ts:40:5 › GET Item (31.8s)
+Shipment Advice Records: 254 Records
+Shipment Advice No: SAV2606-000139
+Verified Shipment Advice search: SAV2606-000139
+Export file: shipmentAdvice-shipmentAdviceView.xlsx
+Verified export contains data
+Opened Shipment Advice URL: https://oi-uat.tradebeyond.com/document/order/shipmentAdvice/SAV2606-000139/1
+  ✓   8 [chromium] › tests/e2e/shipment-advice.spec.ts:8:5 › GET Shipment Advice (38.4s)
+VPO Records: 10000 Records
+PO Number: VPO2601-001338
+Verified PO search: VPO2601-001338
+Export file: vpo-vpoView.xlsx
+Verified export contains data
+Opened VPO URL: https://oi-uat.tradebeyond.com/document/order/vpo/VPO2601-001338/8
+  ✓   9 [chromium] › tests/e2e/vendor-po.spec.ts:8:5 › GET Vendor Purchase Order (38.6s)
+Vendor Records: [33m1374[39m
+Selected Vendor: V001004
+Export file: vendor-vendorActiveView.xlsx
+Download path: /Users/ummarfaeeque/Projects/cbx-playwright/test-results/.playwright-artifacts-0/063c2063-de94-49fd-a545-637988eac698
+Verified Vendor in export: V001004
+  ✓  10 [chromium] › tests/e2e/vendor.spec.ts:7:5 › GET Vendor (25.7s)
+
+  10 passed (6.7m)
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report[39m
+[36m[39m
+
+========================================
+ALL GET MODULES PASSED
+========================================
