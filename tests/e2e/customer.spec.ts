@@ -18,12 +18,15 @@ test('GET Customer', async ({ page }) => {
 
   await expect(page).toHaveURL(/custActiveView/);
 
-  await page.waitForTimeout(5000);
+  const recordsLocator = page.locator('.total-record-indicator');
+
+  await expect(recordsLocator).not.toHaveText(/loading/i, {
+    timeout: 30000
+  });
 
   // Records validation
   const recordsText = (
-    await page.locator('.total-record-indicator')
-      .innerText()
+    await recordsLocator.innerText()
   ).trim();
 
   console.log('Customer Records:', recordsText);
