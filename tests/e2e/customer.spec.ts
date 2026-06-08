@@ -177,6 +177,7 @@ test('GET Customer', async ({ page }) => {
     '[col-id="businessName"] a'
   ).first().click();
 
+
   await page.waitForLoadState(
     'networkidle'
   );
