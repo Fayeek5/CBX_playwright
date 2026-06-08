@@ -39,8 +39,30 @@ test.use({
 
 test('Item module smoke test', async ({ page }) => {
 
+
+
   // Open Items
-  await page.goto('https://oi-uat.tradebeyond.com/listing/product/item/itemActiveView');
+  // Open Home first
+await page.goto('https://oi-uat.tradebeyond.com/home');
+
+await page.waitForLoadState('domcontentloaded');
+
+// Wait until left navigation is rendered
+await expect(
+  page.locator('.tab-list .tab-icon-button').nth(4)
+).toBeVisible({ timeout: 30000 });
+
+// Give dashboard widgets time to settle
+await page.waitForTimeout(3000);
+
+// Open Product module
+await page.locator('.tab-list .tab-icon-button').nth(4).click();
+
+// Open Items
+await page.getByRole('link', { name: 'Items' }).click();
+
+// Verify listing loaded
+await expect(page).toHaveURL(/itemActiveView/);
   await page.waitForTimeout(5000);
 
   // Dismiss sidenav overlay
