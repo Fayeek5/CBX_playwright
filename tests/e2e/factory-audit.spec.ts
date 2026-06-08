@@ -8,6 +8,10 @@ test.use({
 test('GET Factory Audit', async ({ page }) => {
 
   await page.goto('https://oi-uat.tradebeyond.com/home');
+
+  await page.waitForLoadState('networkidle');
+
+  await page.waitForTimeout(2000);
   await page.waitForTimeout(5000);
 
   await page.locator('.tab-list > button:nth-child(8)')

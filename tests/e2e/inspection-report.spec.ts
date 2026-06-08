@@ -11,6 +11,10 @@ test('GET Inspection Report', async ({ page }) => {
 
   await page.waitForLoadState('networkidle');
 
+  await page.waitForTimeout(2000);
+
+  await page.waitForLoadState('networkidle');
+
   await page.waitForTimeout(5000);
   await page.waitForTimeout(5000);
 
