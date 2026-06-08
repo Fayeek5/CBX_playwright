@@ -1,7 +1,10 @@
 import { Page, expect } from '@playwright/test';
 import { search } from '../helpers/search-helper';
+import { exportSelectedRows } from '../helpers/export-helper';
+import { demoPause } from '../helpers/demo-helper';
 
 export async function runItem(page: Page) {
+
   await page.goto('https://oi-uat.tradebeyond.com/home');
 
   await expect(
@@ -17,18 +20,70 @@ export async function runItem(page: Page) {
   await expect(page)
     .toHaveURL(/itemActiveView/);
 
+  await demoPause(page);
+
   await expect(
     page.getByText(/\d+\s+Records/i)
   ).toBeVisible();
 
+  const itemNo = (
+    await page.locator('[col-id="itemNo"] a')
+      .first()
+      .textContent()
+  )?.trim();
+
+  console.log(
+    'Selected Item:',
+    itemNo
+  );
+
   await search(
     page,
-    'ITM2605-001316'
+    itemNo!
   );
 
   await expect(
-    page.getByText('ITM2605-001316')
-  ).toBeVisible();
+    page.locator('[col-id="itemNo"] a')
+      .first()
+  ).toContainText(itemNo!);
 
-  console.log('Item completed');
+  await page.getByLabel('', {
+    exact: true
+  }).nth(1).check();
+
+  const download =
+    await exportSelectedRows(page);
+
+  console.log(
+    'Export file:',
+    download.suggestedFilename()
+  );
+
+  const itemLink =
+    page.locator('[col-id="itemNo"] a')
+      .first();
+
+  await itemLink.click();
+
+  await demoPause(page);
+
+  await expect(page)
+    .toHaveURL(/document\/product\/item/i);
+
+  await expect(page.url())
+    .toContain(itemNo!);
+
+  console.log(
+    'Verified Item No:',
+    itemNo
+  );
+
+  console.log(
+    'Opened Item URL:',
+    page.url()
+  );
+
+  console.log(
+    'Item completed'
+  );
 }

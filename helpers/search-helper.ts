@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 
 export async function search(page: Page, value: string) {
 
@@ -11,8 +11,13 @@ export async function search(page: Page, value: string) {
     .nth(1)
     .click({ force: true });
 
-  await page.getByPlaceholder('Filter...')
-    .fill(value);
+  const filterInput =
+    page.getByPlaceholder('Filter...');
+
+  await expect(filterInput)
+    .toBeVisible({ timeout: 10000 });
+
+  await filterInput.fill(value);
 
   await page.getByRole('button', {
     name: 'Apply'
