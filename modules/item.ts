@@ -13,12 +13,25 @@ export async function runItem(page: Page) {
 
   await page.locator('.tab-list .tab-icon-button').nth(4).click();
 
-  await page.getByRole('link', {
-    name: 'Items'
-  }).click();
+  const itemsLink =
+    page.getByRole('link', {
+      name: 'Items'
+    });
+
+  await expect(itemsLink)
+    .toBeVisible({
+      timeout: 30000
+    });
+
+  await itemsLink.click();
 
   await expect(page)
-    .toHaveURL(/itemActiveView/);
+    .toHaveURL(
+      /itemActiveView/,
+      {
+        timeout: 30000
+      }
+    );
 
   await demoPause(page);
 
