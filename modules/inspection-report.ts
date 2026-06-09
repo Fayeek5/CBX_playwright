@@ -1,35 +1,33 @@
 import { Page, expect } from '@playwright/test';
+import { search } from '../helpers/search-helper';
+import { exportSelectedRows } from '../helpers/export-helper';
+import { demoPause } from '../helpers/demo-helper';
 const XLSX = require('xlsx');
 
-export async function runFactoryAudit(page: Page) {
+export async function runInspectionReport(page: Page) {
 
   await page.goto('https://oi-uat.tradebeyond.com/home');
 
   await page.waitForLoadState('networkidle');
 
-  await page.waitForTimeout(2000);
-  await page.waitForTimeout(5000);
-
-  await page.waitForTimeout(3000);
+  await demoPause(page);
 
   await page.locator('.tab-list > button:nth-child(8)')
-    .click({ force: true });
-
-  await page.waitForTimeout(2000);
+    .click();
 
   await expect(
     page.getByRole('link', {
-      name: 'Factory Audits'
+      name: 'Inspection Reports'
     })
   ).toBeVisible({
     timeout: 30000
   });
 
   await page.getByRole('link', {
-    name: 'Factory Audits'
+    name: 'Inspection Reports'
   }).click();
 
-  await page.waitForTimeout(5000);
+  await demoPause(page);
 
   const recordsText = (
     await page.locator('.total-record-indicator')
@@ -37,53 +35,34 @@ export async function runFactoryAudit(page: Page) {
   ).trim();
 
   console.log(
-    'Factory Audit Records:',
+    'Inspection Report Records:',
     recordsText
   );
 
   expect(recordsText)
     .toContain('Records');
 
-  await expect(
-    page.locator('[col-id="reportNo"] a')
-      .first()
-  ).toBeVisible({
-    timeout: 30000
-  });
-
   const reportNo = (
     await page.locator(
-      '[col-id="reportNo"] a'
+      '[col-id="inspectReportNo"] a'
     )
       .first()
       .textContent()
   )?.trim();
 
   console.log(
-    'Report No:',
+    'Inspection Report No:',
     reportNo
   );
 
   expect(reportNo)
     .toBeTruthy();
 
-  await page.mouse.click(1200, 200);
-
-  await page.getByRole('button')
-    .filter({ hasText: 'filter_alt' })
-    .first()
-    .click();
-
-  await page.getByPlaceholder('Filter...')
-    .fill(reportNo!);
-
-  await page.getByRole('button', {
-    name: 'Apply'
-  }).click();
+  await search(page, reportNo!, 0);
 
   await expect(
     page.locator(
-      '[col-id="reportNo"] a'
+      '[col-id="inspectReportNo"] a'
     ).first()
   ).toContainText(reportNo!);
 
@@ -94,33 +73,15 @@ export async function runFactoryAudit(page: Page) {
 
   await page.waitForTimeout(5000);
 
+  // Select row
   await page.getByLabel('', {
     exact: true
   }).nth(1).check();
 
   await page.waitForTimeout(5000);
 
-  await page.locator(
-    'app-export-data > .edit-toggle'
-  ).click();
-
-  await page.waitForTimeout(3000);
-
-  await page.getByRole('checkbox', {
-    name: 'Selected Rows Only'
-  }).check();
-
-  await page.waitForTimeout(3000);
-
-  const downloadPromise =
-    page.waitForEvent('download');
-
-  await page.getByRole('button', {
-    name: 'Export'
-  }).click();
-
   const download =
-    await downloadPromise;
+    await exportSelectedRows(page);
 
   console.log(
     'Export file:',
@@ -148,31 +109,29 @@ export async function runFactoryAudit(page: Page) {
     'Verified export contains data'
   );
 
+  // Open document
   await page.locator(
-    '[col-id="reportNo"] a'
+    '[col-id="inspectReportNo"] a'
   ).first().click();
 
   await page.waitForLoadState(
     'networkidle'
   );
 
-  await expect(page)
-    .toHaveURL(
-      /\/document\/quality\/factAudit\//
-    );
+  await page.waitForTimeout(5000);
 
   await expect(page)
     .toHaveURL(
-      new RegExp(reportNo!)
+      /\/document\/quality\/inspectReport\//
     );
 
   console.log(
-    'Opened Factory Audit URL:',
+    'Opened Inspection Report URL:',
     page.url()
   );
 
   console.log(
-    'Factory Audit completed:',
+    'Inspection Report completed:',
     reportNo
   );
 }

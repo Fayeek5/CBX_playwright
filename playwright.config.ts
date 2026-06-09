@@ -84,7 +84,6 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         storageState: 'fixtures/.auth/user.json',
       },
-      dependencies: ['setup'],
     },
 
     // Additional browsers are ready to switch on once the flow is stable.
@@ -92,13 +91,11 @@ export default defineConfig({
     //   name: 'firefox',
     //   testDir: './tests/e2e',
     //   use: { ...devices['Desktop Firefox'], storageState: 'fixtures/.auth/user.json' },
-    //   dependencies: ['setup'],
     // },
     // {
     //   name: 'webkit',
     //   testDir: './tests/e2e',
     //   use: { ...devices['Desktop Safari'], storageState: 'fixtures/.auth/user.json' },
-    //   dependencies: ['setup'],
     // },
   ],
 

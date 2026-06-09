@@ -1,6 +1,8 @@
 import { test } from '@playwright/test';
 
 import { runFactoryAudit } from '../../modules/factory-audit';
+import { runInspectionBooking } from '../../modules/inspection-booking';
+import { runInspectionReport } from '../../modules/inspection-report';
 
 test.use({
   storageState: 'fixtures/.auth/user.json'
@@ -8,4 +10,8 @@ test.use({
 
 test('Quality Regression', async ({ page }) => {
   await runFactoryAudit(page);
+
+  await runInspectionBooking(page);
+
+  await runInspectionReport(page);
 });
