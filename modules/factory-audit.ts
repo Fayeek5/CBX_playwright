@@ -1,11 +1,7 @@
-import { test, expect } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 const XLSX = require('xlsx');
 
-test.use({
-  storageState: 'fixtures/.auth/user.json'
-});
-
-test('GET Factory Audit', async ({ page }) => {
+export async function runFactoryAudit(page: Page) {
 
   await page.goto('https://oi-uat.tradebeyond.com/home');
 
@@ -14,8 +10,10 @@ test('GET Factory Audit', async ({ page }) => {
   await page.waitForTimeout(2000);
   await page.waitForTimeout(5000);
 
+  await page.waitForTimeout(3000);
+
   await page.locator('.tab-list > button:nth-child(8)')
-    .click();
+    .click({ force: true });
 
   await page.getByRole('link', {
     name: 'Factory Audits'
@@ -54,7 +52,6 @@ test('GET Factory Audit', async ({ page }) => {
 
   await page.mouse.click(1200, 200);
 
-  // Search by Report No
   await page.getByRole('button')
     .filter({ hasText: 'filter_alt' })
     .first()
@@ -80,21 +77,18 @@ test('GET Factory Audit', async ({ page }) => {
 
   await page.waitForTimeout(5000);
 
-  // Select row
   await page.getByLabel('', {
     exact: true
   }).nth(1).check();
 
   await page.waitForTimeout(5000);
 
-  // Export icon
   await page.locator(
     'app-export-data > .edit-toggle'
   ).click();
 
   await page.waitForTimeout(3000);
 
-  // Selected Rows Only
   await page.getByRole('checkbox', {
     name: 'Selected Rows Only'
   }).check();
@@ -110,8 +104,6 @@ test('GET Factory Audit', async ({ page }) => {
 
   const download =
     await downloadPromise;
-
-  await page.waitForTimeout(5000);
 
   console.log(
     'Export file:',
@@ -139,7 +131,6 @@ test('GET Factory Audit', async ({ page }) => {
     'Verified export contains data'
   );
 
-  // Open document
   await page.locator(
     '[col-id="reportNo"] a'
   ).first().click();
@@ -147,8 +138,6 @@ test('GET Factory Audit', async ({ page }) => {
   await page.waitForLoadState(
     'networkidle'
   );
-
-  await page.waitForTimeout(5000);
 
   await expect(page)
     .toHaveURL(
@@ -164,4 +153,9 @@ test('GET Factory Audit', async ({ page }) => {
     'Opened Factory Audit URL:',
     page.url()
   );
-});
+
+  console.log(
+    'Factory Audit completed:',
+    reportNo
+  );
+}
