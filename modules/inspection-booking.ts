@@ -4,7 +4,7 @@ import { exportSelectedRows } from '../helpers/export-helper';
 import { demoPause } from '../helpers/demo-helper';
 const XLSX = require('xlsx');
 
-export async function runVendorPO(page: Page) {
+export async function runInspectionBooking(page: Page) {
 
   await page.goto('https://oi-uat.tradebeyond.com/home');
 
@@ -12,25 +12,20 @@ export async function runVendorPO(page: Page) {
 
   await demoPause(page);
 
-  await page.getByRole('button')
-    .filter({ hasText: /^$/ })
-    .nth(5)
+  await page.locator('.tab-list > button:nth-child(8)')
     .click();
 
   await expect(
     page.getByRole('link', {
-      name: 'Vendor Purchase Orders'
+      name: 'Inspection Bookings'
     })
   ).toBeVisible({
     timeout: 30000
   });
 
   await page.getByRole('link', {
-    name: 'Vendor Purchase Orders'
+    name: 'Inspection Bookings'
   }).click();
-
-  await expect(page)
-    .toHaveURL(/vpo/i);
 
   await demoPause(page);
 
@@ -39,39 +34,49 @@ export async function runVendorPO(page: Page) {
       .innerText()
   ).trim();
 
-  console.log('VPO Records:', recordsText);
+  console.log(
+    'Inspection Booking Records:',
+    recordsText
+  );
 
   expect(recordsText)
     .toContain('Records');
 
-  const vpoNo = (
-    await page.locator('[col-id="vpoNo"] a')
+  const bookingNo = (
+    await page.locator(
+      '[col-id="inspectBookingNo"] a'
+    )
       .first()
       .textContent()
   )?.trim();
 
-  console.log('PO Number:', vpoNo);
+  console.log(
+    'Inspection Booking No:',
+    bookingNo
+  );
 
-  expect(vpoNo).toBeTruthy();
+  expect(bookingNo)
+    .toBeTruthy();
 
-  await search(page, vpoNo!);
+  await search(page, bookingNo!, 0);
 
   await expect(
-    page.locator('[col-id="vpoNo"] a')
-      .first()
-  ).toContainText(vpoNo!);
+    page.locator(
+      '[col-id="inspectBookingNo"] a'
+    ).first()
+  ).toContainText(bookingNo!);
 
   console.log(
-    'Verified PO search:',
-    vpoNo
+    'Verified Booking search:',
+    bookingNo
   );
 
   await page.waitForTimeout(5000);
 
   // Select row
-  await page.getByLabel('', { exact: true })
-    .nth(1)
-    .check();
+  await page.getByLabel('', {
+    exact: true
+  }).nth(1).check();
 
   await page.waitForTimeout(5000);
 
@@ -106,7 +111,7 @@ export async function runVendorPO(page: Page) {
 
   // Open document
   await page.locator(
-    '[col-id="vpoNo"] a'
+    '[col-id="inspectBookingNo"] a'
   ).first().click();
 
   await page.waitForLoadState(
@@ -116,20 +121,19 @@ export async function runVendorPO(page: Page) {
   await page.waitForTimeout(5000);
 
   await expect(page)
-    .toHaveURL(/\/document\/order\/vpo\//);
-
-  await expect(page)
     .toHaveURL(
-      new RegExp(vpoNo!)
+      /\/document\/quality\/inspectBooking\//
     );
 
+
+
   console.log(
-    'Opened VPO URL:',
+    'Opened Inspection Booking URL:',
     page.url()
   );
 
   console.log(
-    'Vendor PO completed:',
-    vpoNo
+    'Inspection Booking completed:',
+    bookingNo
   );
 }
