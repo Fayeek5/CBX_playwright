@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 
 export async function search(
   page: Page,
@@ -7,39 +7,39 @@ export async function search(
 ) {
   await page.waitForLoadState('networkidle');
 
-  await page.mouse.click(1200, 200);
+  await page.keyboard.press('Escape').catch(() => {});
+  await page.mouse.click(1200, 200).catch(() => {});
 
-  await page.keyboard.press('Escape');
+  const overlay = page.locator('.cdk-overlay-backdrop');
 
-  await page.waitForTimeout(1000);
-  await page.mouse.click(1200, 200);
+  if (await overlay.isVisible().catch(() => false)) {
+    await overlay.click({ force: true }).catch(() => {});
+    await overlay.waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {});
+  }
 
-  await page.keyboard.press('Escape');
-
-  await page.getByRole('button')
+  const filterButton = page
+    .getByRole('button')
     .filter({ hasText: 'filter_alt' })
-    .nth(filterIndex)
-    .click({ force: true });
+    .nth(filterIndex);
 
-  await page.getByPlaceholder('Filter...')
-    .waitFor({
-      state: 'visible',
-      timeout: 30000
-    });
+  await expect(filterButton).toBeVisible({
+    timeout: 30000
+  });
 
-  await page.getByPlaceholder('Filter...')
-    .waitFor({ state: 'visible', timeout: 10000 });
+  await filterButton.click({ force: true });
 
-  await page.getByPlaceholder('Filter...')
-    .fill(value);
+  const filterInput =
+    page.getByPlaceholder('Filter...');
+
+  await expect(filterInput).toBeVisible({
+    timeout: 10000
+  });
+
+  await filterInput.fill(value);
 
   await page.getByRole('button', {
     name: 'Apply'
   }).click({ force: true });
 
   await page.waitForLoadState('networkidle');
-
-  await page.keyboard.press('Escape');
-
-  await page.waitForTimeout(1000);
 }
