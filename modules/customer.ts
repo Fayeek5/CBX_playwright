@@ -60,6 +60,8 @@ export async function runCustomer(page: Page) {
   await page.getByText('Clear Search.')
     .click();
 
+  await page.waitForTimeout(2000);
+
   await search(
     page,
     customerId.toLowerCase(),
