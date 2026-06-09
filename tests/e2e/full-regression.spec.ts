@@ -6,6 +6,7 @@ import { runFactory } from '../../modules/factory';
 import { runForwarder } from '../../modules/forwarder';
 import { runCustomer } from '../../modules/customer';
 import { runFactoryAudit } from '../../modules/factory-audit';
+import { runVendorPO } from '../../modules/vendor-po';
 
 test.use({
   storageState: 'fixtures/.auth/user.json'
@@ -24,6 +25,8 @@ test('Full business flow', async ({ page }) => {
   await runCustomer(page);
 
   await runFactoryAudit(page);
+
+  await runVendorPO(page);
 
 
 });

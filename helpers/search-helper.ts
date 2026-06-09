@@ -5,6 +5,13 @@ export async function search(
   value: string,
   filterIndex = 1
 ) {
+  await page.waitForLoadState('networkidle');
+
+  await page.mouse.click(1200, 200);
+
+  await page.keyboard.press('Escape');
+
+  await page.waitForTimeout(1000);
   await page.mouse.click(1200, 200);
 
   await page.keyboard.press('Escape');
@@ -15,9 +22,24 @@ export async function search(
     .click({ force: true });
 
   await page.getByPlaceholder('Filter...')
+    .waitFor({
+      state: 'visible',
+      timeout: 30000
+    });
+
+  await page.getByPlaceholder('Filter...')
+    .waitFor({ state: 'visible', timeout: 10000 });
+
+  await page.getByPlaceholder('Filter...')
     .fill(value);
 
   await page.getByRole('button', {
     name: 'Apply'
-  }).click();
+  }).click({ force: true });
+
+  await page.waitForLoadState('networkidle');
+
+  await page.keyboard.press('Escape');
+
+  await page.waitForTimeout(1000);
 }

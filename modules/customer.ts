@@ -26,6 +26,13 @@ export async function runCustomer(page: Page) {
     timeout: 30000
   });
 
+  await expect(
+    page.locator('[col-id="businessName"] a')
+      .first()
+  ).toBeVisible({
+    timeout: 30000
+  });
+
   const customerLink =
     page.locator('[col-id="businessName"] a')
       .first();

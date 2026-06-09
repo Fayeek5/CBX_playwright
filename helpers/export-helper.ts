@@ -1,9 +1,22 @@
 import { Page, expect } from '@playwright/test';
 
 export async function exportSelectedRows(page: Page) {
-  await page.locator('app-export-data > .edit-toggle').click();
+  await page.locator(
+    'app-export-data > .edit-toggle'
+  ).click();
 
-  await page.getByText('Selected Rows Only').click();
+  const selectedRows =
+    page.getByText(
+      'Selected Rows Only'
+    );
+
+  await expect(
+    selectedRows
+  ).toBeVisible({
+    timeout: 30000
+  });
+
+  await selectedRows.click();
 
   const downloadPromise = page.waitForEvent('download');
 

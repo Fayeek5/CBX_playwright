@@ -12,8 +12,18 @@ export async function runFactoryAudit(page: Page) {
 
   await page.waitForTimeout(3000);
 
-  await page.locator('.tab-list > button:nth-child(8)')
+  await page.locator('button:nth-child(9)')
     .click({ force: true });
+
+  await page.waitForTimeout(2000);
+
+  await expect(
+    page.getByRole('link', {
+      name: 'Factory Audits'
+    })
+  ).toBeVisible({
+    timeout: 30000
+  });
 
   await page.getByRole('link', {
     name: 'Factory Audits'
@@ -33,6 +43,13 @@ export async function runFactoryAudit(page: Page) {
 
   expect(recordsText)
     .toContain('Records');
+
+  await expect(
+    page.locator('[col-id="reportNo"] a')
+      .first()
+  ).toBeVisible({
+    timeout: 30000
+  });
 
   const reportNo = (
     await page.locator(
