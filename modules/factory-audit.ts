@@ -5,22 +5,21 @@ test.use({
   storageState: 'fixtures/.auth/user.json'
 });
 
-test('GET Vendor Purchase Order', async ({ page }) => {
+test('GET Factory Audit', async ({ page }) => {
 
   await page.goto('https://oi-uat.tradebeyond.com/home');
+
+  await page.waitForLoadState('networkidle');
+
+  await page.waitForTimeout(2000);
   await page.waitForTimeout(5000);
 
-  await page.getByRole('button')
-    .filter({ hasText: /^$/ })
-    .nth(5)
+  await page.locator('.tab-list > button:nth-child(8)')
     .click();
 
   await page.getByRole('link', {
-    name: 'Vendor Purchase Orders'
+    name: 'Factory Audits'
   }).click();
-
-  await expect(page)
-    .toHaveURL(/vpo/i);
 
   await page.waitForTimeout(5000);
 
@@ -29,66 +28,76 @@ test('GET Vendor Purchase Order', async ({ page }) => {
       .innerText()
   ).trim();
 
-  console.log('VPO Records:', recordsText);
+  console.log(
+    'Factory Audit Records:',
+    recordsText
+  );
 
   expect(recordsText)
     .toContain('Records');
 
-  const vpoNo = (
-    await page.locator('[col-id="vpoNo"] a')
+  const reportNo = (
+    await page.locator(
+      '[col-id="reportNo"] a'
+    )
       .first()
       .textContent()
   )?.trim();
 
-  console.log('PO Number:', vpoNo);
+  console.log(
+    'Report No:',
+    reportNo
+  );
 
-  expect(vpoNo).toBeTruthy();
+  expect(reportNo)
+    .toBeTruthy();
 
-  // Close left menu overlay
   await page.mouse.click(1200, 200);
 
-  // Search by PO Number
+  // Search by Report No
   await page.getByRole('button')
     .filter({ hasText: 'filter_alt' })
-    .nth(1)
+    .first()
     .click();
 
   await page.getByPlaceholder('Filter...')
-    .fill(vpoNo!);
+    .fill(reportNo!);
 
   await page.getByRole('button', {
     name: 'Apply'
   }).click();
 
   await expect(
-    page.locator('[col-id="vpoNo"] a')
-      .first()
-  ).toContainText(vpoNo!);
+    page.locator(
+      '[col-id="reportNo"] a'
+    ).first()
+  ).toContainText(reportNo!);
 
   console.log(
-    'Verified PO search:',
-    vpoNo
+    'Verified Report search:',
+    reportNo
   );
 
   await page.waitForTimeout(5000);
 
   // Select row
-  await page.getByLabel('', { exact: true })
-    .nth(1)
-    .check();
+  await page.getByLabel('', {
+    exact: true
+  }).nth(1).check();
 
   await page.waitForTimeout(5000);
 
-  // Export
+  // Export icon
   await page.locator(
     'app-export-data > .edit-toggle'
   ).click();
 
   await page.waitForTimeout(3000);
 
-  await page.getByText(
-    'Selected Rows Only'
-  ).click();
+  // Selected Rows Only
+  await page.getByRole('checkbox', {
+    name: 'Selected Rows Only'
+  }).check();
 
   await page.waitForTimeout(3000);
 
@@ -132,7 +141,7 @@ test('GET Vendor Purchase Order', async ({ page }) => {
 
   // Open document
   await page.locator(
-    '[col-id="vpoNo"] a'
+    '[col-id="reportNo"] a'
   ).first().click();
 
   await page.waitForLoadState(
@@ -142,15 +151,17 @@ test('GET Vendor Purchase Order', async ({ page }) => {
   await page.waitForTimeout(5000);
 
   await expect(page)
-    .toHaveURL(/\/document\/order\/vpo\//);
+    .toHaveURL(
+      /\/document\/quality\/factAudit\//
+    );
 
   await expect(page)
     .toHaveURL(
-      new RegExp(vpoNo!)
+      new RegExp(reportNo!)
     );
 
   console.log(
-    'Opened VPO URL:',
+    'Opened Factory Audit URL:',
     page.url()
   );
 });
