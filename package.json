@@ -13,7 +13,8 @@
     "report": "playwright show-report",
     "codegen": "playwright codegen https://oi-uat.tradebeyond.com/",
     "typecheck": "tsc --noEmit",
-    "install:browsers": "playwright install"
+    "install:browsers": "playwright install",
+    "regression:fresh": "rm -f fixtures/.auth/user.json && npx playwright test tests/auth.setup.ts --headed && npx playwright test tests/e2e/regression-orchestrator.spec.ts --headed --workers=1 --retries=1"
   },
   "keywords": [
     "playwright",
