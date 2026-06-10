@@ -3,7 +3,7 @@ const XLSX = require('xlsx');
 
 export async function runFactoryAudit(page: Page) {
 
-  await page.goto('https://oi-uat.tradebeyond.com/home');
+  await page.goto('/home');
 
   await page.waitForLoadState('networkidle');
 

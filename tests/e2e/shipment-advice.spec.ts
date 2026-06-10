@@ -7,7 +7,7 @@ test.use({
 
 test('GET Shipment Advice', async ({ page }) => {
 
-  await page.goto('https://oi-uat.tradebeyond.com/home');
+  await page.goto('/home');
   await page.waitForTimeout(5000);
 
   await page.getByRole('button')

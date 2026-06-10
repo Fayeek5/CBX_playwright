@@ -6,7 +6,7 @@ test.use({
 
 test('Vendor debug', async ({ page }) => {
 
-  await page.goto('https://oi-uat.tradebeyond.com/home');
+  await page.goto('/home');
 
   await page.locator('button:nth-child(9)').click();
   await page.getByRole('link', { name: 'Vendors' }).click();

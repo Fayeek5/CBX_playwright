@@ -5,7 +5,7 @@ import { exportSelectedRows } from '../helpers/export-helper';
 
 export async function runForwarder(page: Page) {
 
-  await page.goto('https://oi-uat.tradebeyond.com/home');
+  await page.goto('/home');
 
   await page.waitForLoadState('networkidle');
 

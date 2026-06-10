@@ -43,7 +43,7 @@ test('GET Item', async ({ page }) => {
 
   // Open Items
   // Open Home first
-await page.goto('https://oi-uat.tradebeyond.com/home');
+await page.goto('/home');
 
 await page.waitForLoadState('domcontentloaded');
 

@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { defineConfig, devices } from '@playwright/test';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
@@ -5,7 +6,6 @@ import * as path from 'path';
 // Load environment variables from .env (credentials, base URL, etc.)
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
-const BASE_URL = process.env.BASE_URL ?? 'https://oi-uat.tradebeyond.com';
 const CI = !!process.env.CI;
 
 export default defineConfig({
@@ -37,7 +37,7 @@ export default defineConfig({
   ],
 
   use: {
-    baseURL: BASE_URL,
+    baseURL: process.env.BASE_URL,
 
     // Artifacts for debugging failures.
     trace: 'on-first-retry',

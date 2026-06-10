@@ -6,7 +6,7 @@ test.use({
 
 test('GET Vendor', async ({ page }) => {
 
-  await page.goto('https://oi-uat.tradebeyond.com/home');
+  await page.goto('/home');
 
   await page.waitForLoadState('networkidle');
 
