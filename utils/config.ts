@@ -20,7 +20,7 @@ function required(name: string): string {
 }
 
 export const config = {
-  baseUrl: process.env.BASE_URL ?? 'https://oi-uat.tradebeyond.com',
+  baseUrl: required('BASE_URL'),
 
   // Credentials are only read when login actually runs, so reference
   // them lazily through getters to avoid throwing during simple smoke runs.
