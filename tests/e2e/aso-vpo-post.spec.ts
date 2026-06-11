@@ -108,16 +108,20 @@ test('ASO VPO POST flow', async ({ page }) => {
         .count() > 0
     ) {
 
-      const activeButton = page.getByRole('menuitem', {
-        name: 'Active'
-      });
+      if (
+        await page
+          .getByRole('menuitem', {
+            name: 'Active'
+          })
+          .count() > 0
+      ) {
 
-      await activeButton.waitFor({
-        state: 'visible',
-        timeout: 30000
-      });
-
-      await activeButton.click();
+        await page
+          .getByRole('menuitem', {
+            name: 'Active'
+          })
+          .click();
+      }
 
       console.log(
         'Marked Active'

@@ -8,6 +8,10 @@ test('ASO VPO Search flow', async ({ page }) => {
 
   await page.goto('/listing/order/vpo/vpoView');
 
+  await page.waitForLoadState('networkidle');
+
+  await page.waitForTimeout(3000);
+
   await page
     .getByRole('button')
     .filter({ hasText: 'filter_alt' })

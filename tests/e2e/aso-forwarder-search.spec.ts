@@ -10,7 +10,7 @@ test('ASO Forwarder Search flow', async ({ page }) => {
 
   const forwarderCode = (
     await page
-      .locator('[col-id="forwarderCode"] .text-wrapper')
+      .locator('[col-id="forwarderCode"] div.text-wrapper')
       .first()
       .textContent()
   )?.trim();
@@ -43,7 +43,7 @@ test('ASO Forwarder Search flow', async ({ page }) => {
       .getByRole('row', {
         name: new RegExp(forwarderCode!)
       })
-      .locator('[col-id="forwarderCode"] .text-wrapper')
+      .locator('[col-id="forwarderCode"] div.text-wrapper')
   ).toContainText(forwarderCode!);
 
   console.log(
