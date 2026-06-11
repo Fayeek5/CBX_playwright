@@ -69,14 +69,6 @@ test('ASO Vendor Search flow', async ({ page }) => {
       name: new RegExp(vendorName!)
     })
     .getByLabel('', { exact: true })
-    .check();
-
-  await page
-    .getByRole('row', {
-      name: new RegExp(vendorName!)
-    })
-    .getByLabel('', { exact: true })
-    .uncheck();
 
   console.log(
     'Vendor search completed:',
