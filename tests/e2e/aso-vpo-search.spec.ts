@@ -12,7 +12,9 @@ test('ASO VPO Search flow', async ({ page }) => {
     .getByRole('button')
     .filter({ hasText: 'filter_alt' })
     .first()
-    .click();
+    .evaluate(el => (el as HTMLElement).click());
+
+  await page.waitForTimeout(3000);
 
   await page
     .getByPlaceholder('Filter...')
