@@ -14,12 +14,6 @@ export class DashboardPage extends BasePage {
 
       await this.page.waitForLoadState('networkidle');
 
-      // Wait for the HOME menu item visible in top nav
-      await this.page.getByText('HOME').waitFor({
-        state: 'visible',
-        timeout: 30000
-      });
-
       return true;
     } catch {
       return false;

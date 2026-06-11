@@ -21,29 +21,17 @@ test('ASO Shipment Advice POST flow', async ({ page }) => {
   //
   // Copy
   //
-  const toolsButton = page.getByRole('menuitem', {
-    name: 'Tools'
-  });
-
-  await toolsButton.waitFor({
-    state: 'visible',
-    timeout: 30000
-  });
-
-  await toolsButton.click();
-
-  console.log('Clicked Tools');
-
-  await page.waitForTimeout(3000);
+  await page
+    .getByRole('menuitem', {
+      name: 'Tools'
+    })
+    .click();
 
   await page
     .getByRole('menuitem', {
       name: 'Copy'
     })
-    .first()
     .click();
-
-  console.log('Copy clicked');
 
   //
   // Save & Confirm
@@ -65,22 +53,11 @@ test('ASO Shipment Advice POST flow', async ({ page }) => {
     })
     .click();
 
-  const yesButton = page.locator(
-    'button[cdkfocusinitial].close-button-class'
-  );
-
-  await yesButton.waitFor({
-    state: 'visible',
-    timeout: 30000
-  });
-
-  await yesButton.click();
-
-  console.log('Clicked Yes');
-
-  await page.waitForLoadState('networkidle');
-
-  await page.waitForTimeout(5000);
+  await page
+    .getByRole('button', {
+      name: 'yes'
+    })
+    .click();
 
   console.log(
     'Shipment Advice copy flow completed'
@@ -91,19 +68,11 @@ test('ASO Shipment Advice POST flow', async ({ page }) => {
   //
   // Mark As workflow
   //
-  if (
-    await page
-      .getByRole('menuitem', {
-        name: 'Mark as'
-      })
-      .count() > 0
-  ) {
-
-    await page
-      .getByRole('menuitem', {
-        name: 'Mark as'
-      })
-      .click();
+  await page
+    .getByRole('menuitem', {
+      name: 'Mark as'
+    })
+    .click();
 
   if (
     await page
@@ -221,11 +190,5 @@ test('ASO Shipment Advice POST flow', async ({ page }) => {
         );
       }
     }
-  }
-  } else {
-
-    console.log(
-      'Mark As temporarily unavailable in UI. Skipping workflow.'
-    );
   }
 });

@@ -1,0 +1,63 @@
+{
+  "cookies": [
+    {
+      "name": "TGC",
+      "value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCIsImtpZCI6ImY5MWQ2ODhhLTM1YmItNGI0Ni1hMmI2LTQxNTY2NDU2YTg1NyJ9.ZXlKNmFYQWlPaUpFUlVZaUxDSmhiR2NpT2lKa2FYSWlMQ0psYm1NaU9pSkJNalUyUTBKRExVaFROVEV5SWl3aVkzUjVJam9pU2xkVUlpd2lkSGx3SWpvaVNsZFVJaXdpYTJsa0lqb2lOR1ExTlRFMFlqWXRZbVl4WVMwME1HRTNMVGxtWXpJdFlqWmxOakJrWmpFeE5UbGpJbjAuLjlzLWRSZzdYdExsS1JEZXdvX1Fhc1EuamVuRC1EeFF0NXppdU0tRllUU1BBQVpoeDNERFU1T25GTHJoS0RmMXpPTlZSUFJzQ2ZkV3B2QzdaOUo5T1RIOTJ6Z1ptdlNYcXlaSzQ2NFlWaXZDbDJfZG9ET2JZazVuQUYtZmpMS1JZVEFDNmpZWWtUODAzQ1FQc3pYWEthdE8tbjhSVHFqSHFvTG91dXUxTm5QVE1BLlBDZm5KZkwxclZ5MGpvZDNXeWlrbGo2cUNUdlFTeERyWU5qZXlrQXhNdG8.t3sjhH2Fbxnr0jJv7nihwhMhkl4ZIkGtUG5yfUufgGzUi5AwEJdPnfRS7d6Axn1sNxxsC05AKQ0XHq9ah0Jq6Q",
+      "domain": "aso-upgrade-qa.tradebeyond.com",
+      "path": "/cas",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE",
+      "value": "en-US",
+      "domain": "aso-upgrade-qa.tradebeyond.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "access_token",
+      "value": "eyJraWQiOiJjYnhSZXN0QDEyMyIsImFsZyI6IlJTMjU2In0.eyJzdWJzdGl0dXRlVXNlciI6IiIsInN1YiI6InVtbWFyLmZhZWVxdWVAdHJhZGViZXlvbmQuY29tIiwiZGF0ZVRpbWVGb3JtYXRDb2RlIjoiTU0vZGQveXl5eSIsInVzZXJfbmFtZSI6InVtbWFyLmZhZWVxdWVAdHJhZGViZXlvbmQuY29tIiwiaXNzIjoiaHR0cHM6Ly9hc28tdXBncmFkZS1xYS50cmFkZWJleW9uZC5jb20iLCJkYXRlRm9ybWF0Q29kZSI6Ik1NL2RkL3l5eXkiLCJsb2NhbGUiOiJlbl9VUyIsIndvcmtpbmdfZG9tYWluIjoiQVNPIiwiY2xpZW50X2lkIjoiY2J4IiwiZG9tYWluX2lkIjoiQVNPIiwib3duZXJEb21haW5JZCI6IkFTTyIsImN1cnJlbnRVc2VyQ29tYmluZWRJZCI6InVtbWFyLmZhZWVxdWVAdHJhZGViZXlvbmQuY29tQEFTTyIsInJlZnJlc2hUb2tlbklkIjoiMDMyOTQzNWMtODQ3OS00YmNlLWEyNjQtZTg2Nzg3NWM5NWE4Iiwic2NvcGUiOlsidHJ1c3QiLCJyZWFkIiwid3JpdGUiXSwibmV3dWlUaW1lWm9uZUNvZGUiOiJJbmRpYW4vQ2hyaXN0bWFzIiwiZXhwIjoxNzgxMTYwMzE0LCJpYXQiOjE3ODExNTg1MTQsImp0aSI6IjhhYzViZmViLTQ5MWItNDY5Zi1hMGJiLWMyYWY2NjIwY2NhYSIsImVtYWlsIjoidW1tYXIuZmFlZXF1ZUB0cmFkZWJleW9uZC5jb20iLCJzdWJzdGl0dXRlVXNlck5hbWUiOiIiLCJjdXJyZW50VXNlck5hbWUiOiJ1bW1hciBmYWVlcXVlIiwidG9rZW5JZCI6IjhhYzViZmViLTQ5MWItNDY5Zi1hMGJiLWMyYWY2NjIwY2NhYSIsIndvcmtpbmdGb3JVc2VySWQiOiIiLCJ1c2VySWQiOiI0MDI4ZTc4ZjllYTcxNDg4MDE5ZWFhNmI1YjQyMDAwNiIsImF1dGhvcml0aWVzIjpbInVzZXIiXSwiaXNTaW5nbGVTb3VyY2luZ0RvbWFpbiI6dHJ1ZSwidXNlckxvZ2luSWQiOiJ1bW1hci5mYWVlcXVlQHRyYWRlYmV5b25kLmNvbSIsImF1ZCI6ImNieCIsIm5iZiI6MTc4MTE1ODUxNH0.kSJBpy95qo6TPnWSXB5w8f_8PNVgl22Qj9LI9KZj31_Y9ZN0IJQ-Rp2QtsI2ubCOpzuH2cUcSYUKFXaJSZmopcp8dTvR2Z1hBQjM4GkFVEB6teb35NK8JHcM6WT1_p0Uf4tXOWCELQakxZTbZtOGCDIlPg76tDwiN9MX6OTuHkxe1ZQUjG1m-WXf6km5x7zbpwpxYx0PX0AtPbKD5GUVPbpofFcRmYqJ0H-1GsAb9JOCVHnmNDr8f4CxAo5rCUpUvnXXoB8BhbjnqU2v73DHn_lPEhmtmvY9Pkjav9WIOEg7hQSbu6g1THlR_971pRHwsz5GOZ42_qsIFVdfAqsjfQ",
+      "domain": "aso-upgrade-qa.tradebeyond.com",
+      "path": "/",
+      "expires": 1781160314.680865,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "refresh_token",
+      "value": "eyJraWQiOiJjYnhSZXN0QDEyMyIsImFsZyI6IlJTMjU2In0.eyJzdWJzdGl0dXRlVXNlciI6IiIsInN1YiI6InVtbWFyLmZhZWVxdWVAdHJhZGViZXlvbmQuY29tIiwiZGF0ZVRpbWVGb3JtYXRDb2RlIjoiTU0vZGQveXl5eSIsInVzZXJfbmFtZSI6InVtbWFyLmZhZWVxdWVAdHJhZGViZXlvbmQuY29tIiwiaXNzIjoiaHR0cHM6Ly9hc28tdXBncmFkZS1xYS50cmFkZWJleW9uZC5jb20iLCJkYXRlRm9ybWF0Q29kZSI6Ik1NL2RkL3l5eXkiLCJsb2NhbGUiOiJlbl9VUyIsIndvcmtpbmdfZG9tYWluIjoiQVNPIiwiY2xpZW50X2lkIjoiY2J4IiwiZG9tYWluX2lkIjoiQVNPIiwib3duZXJEb21haW5JZCI6IkFTTyIsImN1cnJlbnRVc2VyQ29tYmluZWRJZCI6InVtbWFyLmZhZWVxdWVAdHJhZGViZXlvbmQuY29tQEFTTyIsInJlZnJlc2hUb2tlbklkIjoiMDMyOTQzNWMtODQ3OS00YmNlLWEyNjQtZTg2Nzg3NWM5NWE4Iiwic2NvcGUiOlsidHJ1c3QiLCJyZWFkIiwid3JpdGUiXSwibmV3dWlUaW1lWm9uZUNvZGUiOiJJbmRpYW4vQ2hyaXN0bWFzIiwiZXhwIjoxNzgxMTgwMTE0LCJpYXQiOjE3ODExNTg1MTQsImp0aSI6IjAzMjk0MzVjLTg0NzktNGJjZS1hMjY0LWU4Njc4NzVjOTVhOCIsImVtYWlsIjoidW1tYXIuZmFlZXF1ZUB0cmFkZWJleW9uZC5jb20iLCJzdWJzdGl0dXRlVXNlck5hbWUiOiIiLCJjdXJyZW50VXNlck5hbWUiOiJ1bW1hciBmYWVlcXVlIiwidG9rZW5JZCI6IjhhYzViZmViLTQ5MWItNDY5Zi1hMGJiLWMyYWY2NjIwY2NhYSIsIndvcmtpbmdGb3JVc2VySWQiOiIiLCJ1c2VySWQiOiI0MDI4ZTc4ZjllYTcxNDg4MDE5ZWFhNmI1YjQyMDAwNiIsImF1dGhvcml0aWVzIjpbInVzZXIiXSwiaXNTaW5nbGVTb3VyY2luZ0RvbWFpbiI6dHJ1ZSwidXNlckxvZ2luSWQiOiJ1bW1hci5mYWVlcXVlQHRyYWRlYmV5b25kLmNvbSIsImF1ZCI6ImNieCIsIm5iZiI6MTc4MTE1ODUxNH0.gMtwRWNgeD-aPZew8CLlIsFC52Xn6LASSs-f7tBFZtKaaZkz5QSs0ZpizFqIrkuviWTFjNRSf7QLUwCBFSnSzCvAjmrkspiLx8CfucU4pxrQ_g7CKMONiI6F_KEb4qb2e0-JYrH1-19VC-Vv0q0065gwOvU6RHlB_Mc8hcBPIUr3n3ifwBZ9Y2n7V_wJ0lcZBSu_JbKVYCPiWjZ85spUbnTKkMC8GTbTfP2o4xV1eJGoMFU1YkC_c1c77b6nZTBgD4_tQ5z8uJBVuCtRGmjaYMW5vBeYwX68HO8SZMi_GMeIxiLDeSfawO2ykWkccxOL2IXK_HSPnoRFjRka0oBBsQ",
+      "domain": "aso-upgrade-qa.tradebeyond.com",
+      "path": "/",
+      "expires": 1815718514.788076,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://aso-upgrade-qa.tradebeyond.com",
+      "localStorage": [
+        {
+          "name": "current_login_id",
+          "value": "ummar.faeeque@tradebeyond.com"
+        },
+        {
+          "name": "lastOperationTime",
+          "value": "1781158513122"
+        },
+        {
+          "name": "eTag-en_US-ASO",
+          "value": "\"W/\\\"1575611404\\\"\""
+        }
+      ]
+    }
+  ]
+}

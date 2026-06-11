@@ -1,0 +1,493 @@
+From 514e1528e5c8515e09495c33e4313c5e2cc3ba8a Mon Sep 17 00:00:00 2001
+From: Ummar Faeeque <ummarfaeeque@Ummars-MacBook-Air.local>
+Date: Wed, 10 Jun 2026 18:18:58 +0530
+Subject: [PATCH] Add ASO search and item automation scenarios
+
+---
+ tests/e2e/aso-item-create.spec.ts            |  95 +++++++++++++
+ tests/e2e/aso-item-markas.spec.ts            |  48 +++++++
+ tests/e2e/aso-item.spec.ts                   |  38 +++++
+ tests/e2e/aso-shipment-advice-search.spec.ts |  77 ++++++++++
+ tests/e2e/aso-vendor-post.spec.ts            | 139 +++++++++++++++++++
+ tests/e2e/aso-vpo-search.spec.ts             |  37 +++++
+ 6 files changed, 434 insertions(+)
+ create mode 100644 tests/e2e/aso-item-create.spec.ts
+ create mode 100644 tests/e2e/aso-item-markas.spec.ts
+ create mode 100644 tests/e2e/aso-item.spec.ts
+ create mode 100644 tests/e2e/aso-shipment-advice-search.spec.ts
+ create mode 100644 tests/e2e/aso-vendor-post.spec.ts
+ create mode 100644 tests/e2e/aso-vpo-search.spec.ts
+
+diff --git a/tests/e2e/aso-item-create.spec.ts b/tests/e2e/aso-item-create.spec.ts
+new file mode 100644
+index 0000000..9b4a589
+--- /dev/null
++++ b/tests/e2e/aso-item-create.spec.ts
+@@ -0,0 +1,95 @@
++import { test } from '@playwright/test';
++
++test.use({
++  storageState: 'fixtures/.auth/user.json'
++});
++
++test('ASO Item - Create using Copy', async ({ page }) => {
++
++  await page.goto('/listing/product/item/itemView');
++
++  const sourceItem = (
++    await page
++      .locator('[col-id="itemNo"] a')
++      .first()
++      .textContent()
++  )?.trim();
++
++  console.log('Source Item:', sourceItem);
++
++  await page
++    .locator('[col-id="itemNo"] a')
++    .first()
++    .click();
++
++  await page
++    .getByRole('menuitem', {
++      name: 'Tools'
++    })
++    .click();
++
++  console.log('Tools clicked');
++
++  await page.pause();
++
++  await page.waitForLoadState('networkidle');
++
++  await page
++    .getByRole('button', {
++      name: 'Save & Confirm'
++    })
++    .click();
++
++  await page.waitForLoadState('networkidle');
++
++  console.log(
++    'Current URL:',
++    page.url()
++  );
++
++  const itemNumber =
++    await page
++      .locator('input')
++      .evaluateAll(inputs => {
++
++        for (const input of inputs) {
++
++          const value =
++            (input as HTMLInputElement).value;
++
++          if (
++            value &&
++            value.startsWith('ITM')
++          ) {
++            return value;
++          }
++        }
++
++        return null;
++      });
++
++  console.log(
++    'Created Item:',
++    itemNumber
++  );
++
++  console.log(
++    'Mark As Visible:',
++    await page
++      .getByRole('menuitem', {
++        name: /Mark As/i
++      })
++      .isVisible()
++      .catch(() => false)
++  );
++
++  console.log(
++    'Amend Visible:',
++    await page
++      .getByRole('button', {
++        name: /Amend/i
++      })
++      .isVisible()
++      .catch(() => false)
++  );
++});
+diff --git a/tests/e2e/aso-item-markas.spec.ts b/tests/e2e/aso-item-markas.spec.ts
+new file mode 100644
+index 0000000..3a068d3
+--- /dev/null
++++ b/tests/e2e/aso-item-markas.spec.ts
+@@ -0,0 +1,48 @@
++import { test } from '@playwright/test';
++
++test.use({
++  storageState: 'fixtures/.auth/user.json'
++});
++
++test('ASO Item - Mark As workflow', async ({ page }) => {
++
++  await page.goto('/listing/product/item/itemView');
++
++  await page
++    .locator('[col-id="itemNo"] a')
++    .first()
++    .click();
++
++  await page.waitForLoadState('networkidle');
++
++  await page
++    .getByRole('menuitem', {
++      name: 'Mark as'
++    })
++    .click();
++
++  await page
++    .getByRole('menuitem', {
++      name: 'Adopted'
++    })
++    .click();
++
++  console.log('Marked as Adopted');
++
++  await page.waitForLoadState('networkidle');
++
++  await page
++    .getByRole('menuitem', {
++      name: 'Mark as'
++    })
++    .click();
++
++  await page
++    .getByRole('menuitem', {
++      name: 'Concept'
++    })
++    .click();
++
++  console.log('Marked as Concept');
++
++});
+diff --git a/tests/e2e/aso-item.spec.ts b/tests/e2e/aso-item.spec.ts
+new file mode 100644
+index 0000000..484715d
+--- /dev/null
++++ b/tests/e2e/aso-item.spec.ts
+@@ -0,0 +1,38 @@
++import { test, expect } from '@playwright/test';
++
++test.use({
++  storageState: 'fixtures/.auth/user.json'
++});
++
++test('ASO Item module opens', async ({ page }) => {
++
++  await page.goto('/listing/product/item/itemView');
++
++  await expect(page).toHaveURL(/itemView/);
++
++  await expect(
++    page.getByText(/\d+\s+Records/i)
++  ).toBeVisible({
++    timeout: 30000
++  });
++
++  const itemNo = (
++    await page
++      .locator('[col-id="itemNo"] a')
++      .first()
++      .textContent()
++  )?.trim();
++
++  console.log('ASO Item:', itemNo);
++
++  await page
++    .locator('[col-id="itemNo"] a')
++    .first()
++    .click();
++
++  await page.waitForLoadState('networkidle');
++
++  console.log('Opened URL:', page.url());
++
++  await page.pause();
++});
+diff --git a/tests/e2e/aso-shipment-advice-search.spec.ts b/tests/e2e/aso-shipment-advice-search.spec.ts
+new file mode 100644
+index 0000000..5de2917
+--- /dev/null
++++ b/tests/e2e/aso-shipment-advice-search.spec.ts
+@@ -0,0 +1,77 @@
++import { test, expect } from '@playwright/test';
++
++test.use({
++  storageState: 'fixtures/.auth/user.json'
++});
++
++test('ASO Shipment Advice Search flow', async ({ page }) => {
++
++  await page.goto('/');
++
++  await page.waitForLoadState('networkidle');
++
++  await page.waitForTimeout(3000);
++
++  await page
++    .locator(
++      '.tab-list button'
++    )
++    .nth(4)
++    .click();
++
++  await page
++    .getByRole('link', {
++      name: 'Shipment Advice'
++    })
++    .click();
++
++  await page
++    .locator(
++      'app-sidenav .position-fixed.full-size-offset'
++    )
++    .click({ force: true });
++
++  await page.waitForTimeout(1000);
++
++  await page.waitForLoadState('networkidle');
++
++  await page.waitForSelector(
++    '[col-id="shipmentAdviceNo"] a',
++    { timeout: 30000 }
++  );
++
++  await page.waitForTimeout(3000);
++
++  await page
++    .getByRole('button')
++    .filter({ hasText: 'filter_alt' })
++    .first()
++    .click();
++
++  await page
++    .getByPlaceholder('Filter...')
++    .waitFor({ state: 'visible' });
++
++  await page
++    .getByPlaceholder('Filter...')
++    .fill('SAV2602-000429');
++
++  await page.waitForTimeout(1000);
++
++  await page
++    .getByRole('button', {
++      name: 'Apply'
++    })
++    .click();
++
++  await expect(
++    page.getByRole('row', {
++      name: /SAV2602-000429/
++    })
++  ).toBeVisible();
++
++  console.log(
++    'Shipment Advice search completed'
++  );
++
++});
+diff --git a/tests/e2e/aso-vendor-post.spec.ts b/tests/e2e/aso-vendor-post.spec.ts
+new file mode 100644
+index 0000000..d52d38a
+--- /dev/null
++++ b/tests/e2e/aso-vendor-post.spec.ts
+@@ -0,0 +1,139 @@
++import { test, expect } from '@playwright/test';
++
++test.use({
++  storageState: 'fixtures/.auth/user.json'
++});
++
++test('ASO Vendor POST flow', async ({ page }) => {
++
++  await page.goto('/listing/master/vendor/vendorView');
++
++  await expect(
++    page.getByText(/\d+\s+Records/i)
++  ).toBeVisible({
++    timeout: 30000
++  });
++
++  //
++  // Create
++  //
++  await page
++    .locator('[col-id="businessName"] a')
++    .first()
++    .click();
++
++  await page.waitForLoadState('networkidle');
++
++  await page
++    .getByRole('menuitem', {
++      name: 'Tools'
++    })
++    .click();
++
++  await page
++    .getByRole('menuitem', {
++      name: 'Copy'
++    })
++    .click();
++
++  await page.waitForLoadState('networkidle');
++
++  await page
++    .getByRole('button', {
++      name: 'Save & Confirm'
++    })
++    .click();
++
++  await page.waitForLoadState('networkidle');
++
++  console.log('Create completed');
++
++  //
++  // Mark As -> first option
++  //
++  await page
++    .getByRole('menuitem', {
++      name: 'Mark as'
++    })
++    .click();
++
++  await page
++    .getByRole('menuitem', {
++      name: 'Adopted'
++    })
++    .click();
++
++  await page.waitForLoadState('networkidle');
++
++  console.log('Marked as Adopted');
++
++  //
++  // Mark As -> other option
++  //
++  await page
++    .getByRole('menuitem', {
++      name: 'Mark as'
++    })
++    .click();
++
++  await page
++    .getByRole('menuitem', {
++      name: 'Concept'
++    })
++    .click();
++
++  await page.waitForLoadState('networkidle');
++
++  console.log('Marked as Concept');
++
++  //
++  // Inactive
++  //
++  await page
++    .getByRole('menuitem', {
++      name: 'Mark as'
++    })
++    .click();
++
++  await page
++    .getByRole('menuitem', {
++      name: 'Inactive'
++    })
++    .click();
++
++  await page.waitForLoadState('networkidle');
++
++  await expect(
++    page.getByRole('menuitem', {
++      name: 'Amend'
++    })
++  ).toHaveCount(0);
++
++  console.log('Inactive verified');
++
++  //
++  // Active
++  //
++  await page
++    .getByRole('menuitem', {
++      name: 'Mark as'
++    })
++    .click();
++
++  await page
++    .getByRole('menuitem', {
++      name: 'Active'
++    })
++    .click();
++
++  await page.waitForLoadState('networkidle');
++
++  await expect(
++    page.getByRole('menuitem', {
++      name: 'Amend'
++    })
++  ).toBeVisible();
++
++  console.log('Active verified');
++
++});
+diff --git a/tests/e2e/aso-vpo-search.spec.ts b/tests/e2e/aso-vpo-search.spec.ts
+new file mode 100644
+index 0000000..30cf9c8
+--- /dev/null
++++ b/tests/e2e/aso-vpo-search.spec.ts
+@@ -0,0 +1,37 @@
++import { test, expect } from '@playwright/test';
++
++test.use({
++  storageState: 'fixtures/.auth/user.json'
++});
++
++test('ASO VPO Search flow', async ({ page }) => {
++
++  await page.goto('/listing/order/vpo/vpoView');
++
++  await page
++    .getByRole('button')
++    .filter({ hasText: 'filter_alt' })
++    .first()
++    .click();
++
++  await page
++    .getByPlaceholder('Filter...')
++    .fill('26IB26247_CR');
++
++  await page
++    .getByRole('button', {
++      name: 'Apply'
++    })
++    .click();
++
++  await expect(
++    page.getByRole('link', {
++      name: '26IB26247_CR'
++    })
++  ).toBeVisible();
++
++  console.log(
++    'VPO search completed'
++  );
++
++});
+-- 
+2.50.1 (Apple Git-155)
+

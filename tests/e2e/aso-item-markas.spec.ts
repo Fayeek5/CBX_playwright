@@ -15,6 +15,7 @@ test('ASO Item - Mark As workflow', async ({ page }) => {
 
   await page.waitForLoadState('networkidle');
 
+  
   await page
     .getByRole('menuitem', {
       name: 'Mark as'
@@ -23,13 +24,13 @@ test('ASO Item - Mark As workflow', async ({ page }) => {
 
   await page
     .getByRole('menuitem', {
-      name: 'Adopted'
+      name: 'Inactive'
     })
     .click();
 
-  console.log('Marked as Adopted');
+  console.log('Marked as Inactive');
 
-  await page.waitForLoadState('networkidle');
+  await page.waitForTimeout(5000);
 
   await page
     .getByRole('menuitem', {
@@ -39,10 +40,10 @@ test('ASO Item - Mark As workflow', async ({ page }) => {
 
   await page
     .getByRole('menuitem', {
-      name: 'Concept'
+      name: 'Active'
     })
     .click();
 
-  console.log('Marked as Concept');
+  console.log('Marked as Active');
 
 });
