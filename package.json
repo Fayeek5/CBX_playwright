@@ -1,0 +1,37 @@
+{
+  "name": "cbx-playwright",
+  "version": "1.0.0",
+  "description": "Automated UI testing for CBX Cloud (TradeBeyond) OI UAT using Playwright + TypeScript",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "test:smoke": "playwright test tests/smoke",
+    "test:e2e": "playwright test tests/e2e",
+    "test:chromium": "playwright test --project=chromium",
+    "report": "playwright show-report",
+    "codegen": "playwright codegen https://oi-uat.tradebeyond.com/",
+    "typecheck": "tsc --noEmit",
+    "install:browsers": "playwright install",
+    "regression:fresh": "rm -f fixtures/.auth/user.json && npx playwright test tests/auth.setup.ts --headed && npx playwright test tests/e2e/regression-orchestrator.spec.ts --headed --workers=1 --retries=1"
+  },
+  "keywords": [
+    "playwright",
+    "typescript",
+    "cbx",
+    "tradebeyond",
+    "e2e",
+    "ui-testing"
+  ],
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "@types/node": "^22.10.5",
+    "dotenv": "^16.4.7",
+    "exceljs": "^4.4.0",
+    "pdf-parse": "^2.4.5",
+    "typescript": "^5.7.3",
+    "xlsx": "^0.18.5"
+  }
+}
