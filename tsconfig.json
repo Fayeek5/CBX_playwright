@@ -24,5 +24,12 @@
     "types": ["node", "@playwright/test"]
   },
   "include": ["**/*.ts"],
-  "exclude": ["node_modules", "dist", "playwright-report", "test-results"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "playwright-report",
+    "test-results",
+    "tests/debug",
+    "tests/e2e/oi/*recording.spec.ts"
+  ]
 }
