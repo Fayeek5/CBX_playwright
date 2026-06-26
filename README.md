@@ -1,6 +1,6 @@
 Playwright Regression Automation
 
-This package contains the complete OI Playwright regression suite.
+This package contains the complete Playwright regression suite.
 
 Supported Environments:
 1. Upgrade QA
