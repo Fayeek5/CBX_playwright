@@ -21,7 +21,7 @@ test('Forwarder POST flow', async ({ page }) => {
   console.log('Searching Forwarder:', forwarderCode);
 
   try {
-    await page.getByRole('button').filter({ hasText: 'filter_alt' }).nth(1).click({ timeout: 5000 });
+    await page.locator('app-header-cell').filter({ hasText: 'Forwarder Code' }).locator('.filter-button button').click({ timeout: 5000 });
   } catch {
     await page.locator('.filter-button button').first().click();
   }
