@@ -1,8 +1,4 @@
-import { open } from '../../helpers/navigation';
-import { markActive, markInactive } from '../../helpers/markAs';
-import { save } from '../../helpers/save';
 import { test, expect } from '@playwright/test';
-import { closeSidebar } from '../../../helpers/sidebar-helper';
 
 test.use({
   storageState: 'fixtures/.auth/user.json'

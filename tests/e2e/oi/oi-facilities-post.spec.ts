@@ -1,11 +1,10 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 
 test.use({
   storageState: 'fixtures/.auth/user.json'
 });
 
-test('ASO Forwarder POST flow', async ({ page }) => {
-
+async function openFacilities(page: Page) {
   await page.goto('/home');
 
   await page
@@ -14,63 +13,126 @@ test('ASO Forwarder POST flow', async ({ page }) => {
     .nth(5)
     .click();
 
-  const forwarderLink = page.getByRole('link', { name: 'Forwarders' });
-  await forwarderLink.waitFor({ state: 'visible', timeout: 15000 });
-  await forwarderLink.click();
+  const facilitiesLink = page.getByRole('link', { name: 'Facilities' });
+  await facilitiesLink.waitFor({ state: 'visible', timeout: 15000 });
+  await facilitiesLink.click();
 
   await page.waitForLoadState('domcontentloaded');
   await page.waitForLoadState('networkidle');
 
   //
-  // Move cursor away to dismiss the sidenav overlay
+  // Dismiss sidenav overlay so it doesn't intercept clicks
   //
-  await page.mouse.move(1200, 300);
-  await page.waitForLoadState('domcontentloaded');
-  await page.keyboard.press('Escape');
+  await page
+    .locator('body')
+    .click({ position: { x: 1200, y: 300 } });
+
   await page.waitForLoadState('domcontentloaded');
 
-  const forwarderCode = (
+  await page.keyboard.press('Escape');
+
+  await page.waitForLoadState('domcontentloaded');
+}
+
+test('ASO Facilities POST flow', async ({ page }) => {
+
+  await openFacilities(page);
+
+  //
+  // Wait until Facilities page is loaded
+  //
+  await expect(
+    page.getByRole('heading', {
+      name: 'Partners'
+    })
+  ).toBeVisible();
+
+  console.log(
+    'Current URL after company click:',
+    page.url()
+  );
+
+  //
+  // Fetch Factory ID
+  //
+  const factoryId = (
     await page
-      .locator('[col-id="forwarderCode"] .text-wrapper')
+      .locator('[col-id="factCode"] .text-wrapper')
       .first()
       .textContent()
   )?.trim();
 
-  expect(forwarderCode).toBeTruthy();
+  expect(factoryId).toBeTruthy();
 
-  console.log(
-    'Searching Forwarder:',
-    forwarderCode
-  );
+  console.log('Searching Factory ID:', factoryId);
 
+  //
+  // Search
+  //
   await page
     .getByRole('button')
     .filter({ hasText: 'filter_alt' })
-    .nth(1)
-    .evaluate(el => (el as HTMLElement).click());
-
-  await page.waitForLoadState('domcontentloaded');
-
-  await page
-    .getByPlaceholder('Filter...')
-    .fill(forwarderCode!);
-
-  await page
-    .getByPlaceholder('Filter...')
-    .press('Enter');
-
-  await page
-    .getByRole('row', {
-      name: new RegExp(forwarderCode!)
-    })
-    .getByRole('link')
     .first()
     .click();
 
-  await page.waitForURL('**/document/master/forwarder/**', { timeout: 30000 });
+  await page
+    .getByPlaceholder('Filter...')
+    .fill(factoryId!);
+
+  await page
+    .getByRole('button', {
+      name: 'Apply'
+    })
+    .click();
+
+  //
+  // Fetch Company Name
+  //
+  const companyName = (
+    await page
+      .locator('[col-id="businessName"] a')
+      .first()
+      .textContent()
+  )?.trim();
+
+  expect(companyName).toBeTruthy();
+
+  console.log('Company Name:', companyName);
+
+  //
+  // Open Facility document — scoped to the row matching factoryId to avoid
+  // ambiguity when multiple rows share the same company name
+  //
+  await page
+    .locator('[role="row"]')
+    .filter({
+      has: page.locator(
+        `[col-id="factCode"] .text-wrapper:text-is("${factoryId}")`
+      )
+    })
+    .locator('[col-id="businessName"] a')
+    .first()
+    .click();
+
+  await page.waitForURL('**/document/master/fact/**', { timeout: 30000 });
+
   await page.waitForLoadState('domcontentloaded');
 
-  console.log('Opened URL:', page.url());
+  console.log(
+    'Opened Factory:',
+    factoryId
+  );
+
+  console.log(
+    'Opened URL:',
+    page.url()
+  );
+
+  if (!page.url().includes('/document/master/fact/')) {
+    throw new Error(
+      `Factory document did not open. Current URL: ${page.url()}`
+    );
+  }
 
   //
   // Wait 5 seconds after opening item before clicking Tools
@@ -80,12 +142,20 @@ test('ASO Forwarder POST flow', async ({ page }) => {
   //
   // Tools -> Copy
   //
-  const toolsButton = page.getByRole('menuitem', { name: 'Tools' });
-  await toolsButton.waitFor({ state: 'visible', timeout: 30000 });
-  await toolsButton.click();
+  const toolsButton = page.getByRole('menuitem', {
+    name: 'Tools'
+  });
 
+  await toolsButton.waitFor({
+    state: 'visible',
+    timeout: 30000
+  });
+
+  await toolsButton.click();
   await page
-    .getByRole('menuitem', { name: 'Copy' })
+    .getByRole('menuitem', {
+      name: 'Copy'
+    })
     .click();
 
   console.log('Copy clicked');
@@ -155,21 +225,20 @@ test('ASO Forwarder POST flow', async ({ page }) => {
 
   await markAsButton.click();
 
-  const inactiveOption = page.getByRole('menuitem', { name: 'Inactive' });
-  await inactiveOption.waitFor({ state: 'visible', timeout: 10000 });
-  await inactiveOption.click();
+  await page
+    .getByRole('menuitem', { name: 'Inactive' })
+    .click();
 
   console.log('Marked Inactive');
 
   await page.waitForLoadState('domcontentloaded');
-  await page.waitForTimeout(1000);
 
-  await markAsButton.waitFor({ state: 'visible', timeout: 15000 });
   await markAsButton.click();
 
-  const activeOption = page.getByRole('menuitem', { name: 'Active' });
-  await activeOption.waitFor({ state: 'visible', timeout: 10000 });
-  await activeOption.click();
+  await page
+    .getByRole('menuitem', { name: 'Active' })
+    .click();
 
   console.log('Marked Active');
+
 });
