@@ -7,9 +7,10 @@ test.use({
 test('ASO VPO Search flow', async ({ page }) => {
     await page.goto('/listing/order/vpo/vpoView');
 
-  await page.waitForLoadState('networkidle');
-
   await page.waitForLoadState('domcontentloaded');
+
+  await page.mouse.move(1200, 300);
+  await page.keyboard.press('Escape');
 
   await expect(
     page.locator('[col-id="vpoNo"]').first()

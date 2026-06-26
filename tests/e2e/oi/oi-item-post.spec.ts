@@ -6,11 +6,11 @@ test.use({
 
 test('ASO Item POST flow', async ({ page }) => {
   await page.goto('/listing/product/item/itemView');
-  await page.getByRole('button').filter({ hasText: /^$/ }).nth(1).click();
-  await page.getByRole('link', { name: 'Items' }).click();
+  await page.waitForLoadState('domcontentloaded');
+  await page.waitForLoadState('networkidle');
 
-  await page.mouse.move(800, 400);
-
+  await page.mouse.move(1200, 300);
+  await page.keyboard.press('Escape');
   await page.waitForTimeout(1000);
   const itemLink = page.locator('div[col-id="itemNo"] a').first();
 

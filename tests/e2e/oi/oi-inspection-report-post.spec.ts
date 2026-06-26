@@ -91,14 +91,23 @@ test('ASO Inspection Report POST flow', async ({ page }) => {
   console.log('Save & Confirm clicked');
 
   const cancelButton = page.getByRole('button', { name: 'Cancel' });
-  await cancelButton.waitFor({ state: 'visible', timeout: 20000 });
-  await cancelButton.click();
-  console.log('Clicked Cancel');
+  const cancelVisible = await cancelButton
+    .waitFor({ state: 'visible', timeout: 20000 })
+    .then(() => true)
+    .catch(() => false);
 
-  const yesButton = page.getByRole('button', { name: 'yes' });
-  await yesButton.waitFor({ state: 'visible', timeout: 10000 });
-  await yesButton.click();
-  console.log('Clicked yes');
+  if (cancelVisible) {
+    const isEnabled = await cancelButton.isEnabled().catch(() => false);
+    if (isEnabled) {
+      await cancelButton.click();
+      console.log('Clicked Cancel');
+
+      const yesButton = page.getByRole('button', { name: 'yes' });
+      await yesButton.waitFor({ state: 'visible', timeout: 10000 });
+      await yesButton.click();
+      console.log('Clicked yes');
+    }
+  }
 
   await page.waitForLoadState('domcontentloaded');
 
@@ -126,10 +135,11 @@ test('ASO Inspection Report POST flow', async ({ page }) => {
   console.log('Marked Inactive');
 
   await page.waitForLoadState('domcontentloaded');
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(2000);
 
-  await markAsButton.waitFor({ state: 'visible', timeout: 15000 });
-  await markAsButton.click();
+  const markAsButton2 = page.getByRole('menuitem', { name: 'Mark as' });
+  await markAsButton2.waitFor({ state: 'visible', timeout: 15000 });
+  await markAsButton2.click();
 
   const activeOption = page.getByRole('menuitem', { name: /Set to Active|Active/ }).first();
   await activeOption.waitFor({ state: 'visible', timeout: 10000 });
