@@ -18,19 +18,16 @@ test('Audit POST flow', async ({ page }) => {
 
   await openAudits(page);
 
-  const reportNo = (
-    await page
-      .locator('[col-id="reportNo"] a')
-      .first()
-      .textContent()
-  )?.trim();
+  const reportNoLink = page.locator('[col-id="reportNo"] a').first();
+  const reportNo = (await reportNoLink.textContent())?.trim();
+  const colId = await reportNoLink.evaluate(el => el.closest('[col-id]')?.getAttribute('col-id') ?? '');
 
   expect(reportNo).toBeTruthy();
 
   console.log('Searching Audit Report No:', reportNo);
 
   try {
-    await page.locator('[col-id="reportNo"] .filter-button button').click({ timeout: 5000 });
+    await page.locator(`[col-id="${colId}"] .filter-button button`).click({ timeout: 5000 });
   } catch {
     await page.locator('.filter-button button').first().click();
   }

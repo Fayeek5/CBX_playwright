@@ -35,12 +35,9 @@ test('Facilities POST flow', async ({ page }) => {
   //
   // Fetch Factory ID
   //
-  const factoryId = (
-    await page
-      .locator('[col-id="factCode"] .text-wrapper')
-      .first()
-      .textContent()
-  )?.trim();
+  const factoryIdLink = page.locator('[col-id="factCode"] .text-wrapper').first();
+  const factoryId = (await factoryIdLink.textContent())?.trim();
+  const colId = await factoryIdLink.evaluate(el => el.closest('[col-id]')?.getAttribute('col-id') ?? '');
 
   expect(factoryId).toBeTruthy();
 
@@ -50,7 +47,7 @@ test('Facilities POST flow', async ({ page }) => {
   // Search
   //
   try {
-    await page.locator('[col-id="factCode"] .filter-button button').click({ timeout: 5000 });
+    await page.locator(`[col-id="${colId}"] .filter-button button`).click({ timeout: 5000 });
   } catch {
     await page.locator('.filter-button button').first().click();
   }
@@ -68,12 +65,8 @@ test('Facilities POST flow', async ({ page }) => {
   //
   // Fetch Company Name
   //
-  const companyName = (
-    await page
-      .locator('[col-id="businessName"] a')
-      .first()
-      .textContent()
-  )?.trim();
+  const companyNameLink = page.locator('[col-id="businessName"] a').first();
+  const companyName = (await companyNameLink.textContent())?.trim();
 
   expect(companyName).toBeTruthy();
 

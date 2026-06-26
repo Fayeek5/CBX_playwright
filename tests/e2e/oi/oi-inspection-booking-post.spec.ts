@@ -18,19 +18,16 @@ test('Inspection Booking POST flow', async ({ page }) => {
 
   await openInspectionBookings(page);
 
-  const bookingNo = (
-    await page
-      .locator('[col-id="inspectBookingNo"] a')
-      .first()
-      .textContent()
-  )?.trim();
+  const bookingNoLink = page.locator('[col-id="inspectBookingNo"] a').first();
+  const bookingNo = (await bookingNoLink.textContent())?.trim();
+  const colId = await bookingNoLink.evaluate(el => el.closest('[col-id]')?.getAttribute('col-id') ?? '');
 
   expect(bookingNo).toBeTruthy();
 
   console.log('Searching Booking No:', bookingNo);
 
   try {
-    await page.locator('[col-id="inspectBookingNo"] .filter-button button').click({ timeout: 5000 });
+    await page.locator(`[col-id="${colId}"] .filter-button button`).click({ timeout: 5000 });
   } catch {
     await page.locator('.filter-button button').first().click();
   }

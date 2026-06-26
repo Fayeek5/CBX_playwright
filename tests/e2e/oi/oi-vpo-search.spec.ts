@@ -11,16 +11,16 @@ test('VPO Search flow', async ({ page }) => {
     page.getByText(/\d+\s+Records/i)
   ).toBeVisible({ timeout: 30000 });
 
-  const vpoNo = (
-    await page.locator('div[col-id="vpoNo"] a').first().textContent()
-  )?.trim();
+  const vpoNoLink = page.locator('div[col-id="vpoNo"] a').first();
+  const vpoNo = (await vpoNoLink.textContent())?.trim();
+  const colId = await vpoNoLink.evaluate(el => el.closest('[col-id]')?.getAttribute('col-id') ?? '');
 
   expect(vpoNo).toBeTruthy();
 
   console.log('Searching VPO:', vpoNo);
 
   try {
-    await page.locator('[col-id="vpoNo"] .filter-button button').click({ timeout: 5000 });
+    await page.locator(`[col-id="${colId}"] .filter-button button`).click({ timeout: 5000 });
   } catch {
     await page.locator('.filter-button button').first().click();
   }

@@ -15,13 +15,14 @@ test('Forwarder POST flow', async ({ page }) => {
 
   const forwarderLink = page.locator('[col-id="forwarderCode"] a').first();
   const forwarderCode = (await forwarderLink.textContent())?.trim();
+  const colId = await forwarderLink.evaluate(el => el.closest('[col-id]')?.getAttribute('col-id') ?? '');
 
   expect(forwarderCode).toBeTruthy();
 
   console.log('Searching Forwarder:', forwarderCode);
 
   try {
-    await page.locator('[col-id="forwarderCode"] .filter-button button').click({ timeout: 5000 });
+    await page.locator(`[col-id="${colId}"] .filter-button button`).click({ timeout: 5000 });
   } catch {
     await page.locator('.filter-button button').first().click();
   }

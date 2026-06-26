@@ -23,12 +23,9 @@ test('Vendor Search flow', async ({ page }) => {
 
   expect(supplierId).toBeTruthy();
 
-  const vendorName = (
-    await page
-      .locator('[col-id="businessName"] a')
-      .first()
-      .textContent()
-  )?.trim();
+  const vendorNameLink = page.locator('[col-id="businessName"] a').first();
+  const vendorName = (await vendorNameLink.textContent())?.trim();
+  const colId = await vendorNameLink.evaluate(el => el.closest('[col-id]')?.getAttribute('col-id') ?? '');
 
   expect(vendorName).toBeTruthy();
 
@@ -43,7 +40,7 @@ test('Vendor Search flow', async ({ page }) => {
   );
 
   try {
-    await page.locator('[col-id="businessName"] .filter-button button').click({ timeout: 5000 });
+    await page.locator(`[col-id="${colId}"] .filter-button button`).click({ timeout: 5000 });
   } catch {
     await page.locator('.filter-button button').first().click();
   }

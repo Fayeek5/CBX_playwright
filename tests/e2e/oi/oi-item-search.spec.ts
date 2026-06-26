@@ -11,16 +11,16 @@ test('Item Search flow', async ({ page }) => {
     page.getByText(/\d+\s+Records/i)
   ).toBeVisible({ timeout: 30000 });
 
-  const itemNo = (
-    await page.locator('[col-id="itemNo"] a').first().textContent()
-  )?.trim();
+  const itemNoLink = page.locator('[col-id="itemNo"] a').first();
+  const itemNo = (await itemNoLink.textContent())?.trim();
+  const colId = await itemNoLink.evaluate(el => el.closest('[col-id]')?.getAttribute('col-id') ?? '');
 
   expect(itemNo).toBeTruthy();
 
   console.log('Searching Item:', itemNo);
 
   try {
-    await page.locator('[col-id="itemNo"] .filter-button button').click({ timeout: 5000 });
+    await page.locator(`[col-id="${colId}"] .filter-button button`).click({ timeout: 5000 });
   } catch {
     await page.locator('.filter-button button').first().click();
   }

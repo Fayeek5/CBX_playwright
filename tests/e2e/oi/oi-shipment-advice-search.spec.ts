@@ -16,13 +16,14 @@ test('Shipment Advice Search flow', async ({ page }) => {
   const saLink = page.locator('[col-id="shipmentAdviceNo"] a').first();
   await saLink.waitFor({ state: 'visible', timeout: 30000 });
   const saNo = (await saLink.textContent())?.trim();
+  const colId = await saLink.evaluate(el => el.closest('[col-id]')?.getAttribute('col-id') ?? '');
 
   expect(saNo).toBeTruthy();
 
   console.log('Searching Shipment Advice:', saNo);
 
   try {
-    await page.locator('[col-id="shipmentAdviceNo"] .filter-button button').click({ timeout: 5000 });
+    await page.locator(`[col-id="${colId}"] .filter-button button`).click({ timeout: 5000 });
   } catch {
     await page.locator('.filter-button button').first().click();
   }

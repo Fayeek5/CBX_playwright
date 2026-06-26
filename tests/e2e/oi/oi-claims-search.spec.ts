@@ -18,19 +18,16 @@ test('Claims Search flow', async ({ page }) => {
 
   await openClaims(page);
 
-  const claimNo = (
-    await page
-      .locator('[col-id="claimNo"] a')
-      .first()
-      .textContent()
-  )?.trim();
+  const claimNoLink = page.locator('[col-id="claimNo"] a').first();
+  const claimNo = (await claimNoLink.textContent())?.trim();
+  const colId = await claimNoLink.evaluate(el => el.closest('[col-id]')?.getAttribute('col-id') ?? '');
 
   expect(claimNo).toBeTruthy();
 
   console.log('Searching Claim No:', claimNo);
 
   try {
-    await page.locator('[col-id="claimNo"] .filter-button button').click({ timeout: 5000 });
+    await page.locator(`[col-id="${colId}"] .filter-button button`).click({ timeout: 5000 });
   } catch {
     await page.locator('.filter-button button').first().click();
   }
