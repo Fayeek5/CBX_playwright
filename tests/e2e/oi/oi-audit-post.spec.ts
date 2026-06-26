@@ -30,7 +30,7 @@ test('Audit POST flow', async ({ page }) => {
   console.log('Searching Audit Report No:', reportNo);
 
   try {
-    await page.locator('app-header-cell').filter({ hasText: 'Report No.' }).locator('.filter-button button').click({ timeout: 5000 });
+    await page.locator('[col-id="reportNo"] .filter-button button').click({ timeout: 5000 });
   } catch {
     await page.locator('.filter-button button').first().click();
   }

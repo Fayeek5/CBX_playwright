@@ -21,7 +21,7 @@ test('Forwarder Search flow', async ({ page }) => {
   console.log('Searching Forwarder:', forwarderCode);
 
   try {
-    await page.locator('app-header-cell').filter({ hasText: 'Forwarder Code' }).locator('.filter-button button').click({ timeout: 5000 });
+    await page.locator('[col-id="forwarderCode"] .filter-button button').click({ timeout: 5000 });
   } catch {
     await page.locator('.filter-button button').first().click();
   }

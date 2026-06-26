@@ -22,7 +22,7 @@ test('Shipment Advice Search flow', async ({ page }) => {
   console.log('Searching Shipment Advice:', saNo);
 
   try {
-    await page.locator('app-header-cell').filter({ hasText: 'Shipment Advice No.' }).locator('.filter-button button').click({ timeout: 5000 });
+    await page.locator('[col-id="shipmentAdviceNo"] .filter-button button').click({ timeout: 5000 });
   } catch {
     await page.locator('.filter-button button').first().click();
   }

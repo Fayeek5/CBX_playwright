@@ -43,7 +43,7 @@ test('Vendor Search flow', async ({ page }) => {
   );
 
   try {
-    await page.locator('app-header-cell').filter({ hasText: 'Company Name' }).locator('.filter-button button').click({ timeout: 5000 });
+    await page.locator('[col-id="businessName"] .filter-button button').click({ timeout: 5000 });
   } catch {
     await page.locator('.filter-button button').first().click();
   }
