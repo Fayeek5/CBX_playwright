@@ -8,14 +8,15 @@ test('Forwarder Search flow', async ({ page }) => {
 
   await page.goto('/listing/master/forwarder/forwView');
   await page.waitForLoadState('domcontentloaded');
-  await page.waitForLoadState('networkidle');
+  await expect(page.getByText(/\d+\s+Records/i)).toBeVisible({ timeout: 30000 });
 
   await page.mouse.move(1200, 300);
   await page.keyboard.press('Escape');
 
-  const forwarderLink = page.locator('[col-id="forwarderCode"] a').first();
-  const forwarderCode = (await forwarderLink.textContent())?.trim();
-  const colId = await forwarderLink.evaluate(el => el.closest('[col-id]')?.getAttribute('col-id') ?? '');
+  const forwarderEl = page.locator('[col-id="forwarderCode"] a, [col-id="forwarderCode"] .text-wrapper').first();
+  await forwarderEl.waitFor({ state: 'visible', timeout: 30000 });
+  const forwarderCode = (await forwarderEl.textContent())?.trim();
+  const colId = await forwarderEl.evaluate(el => el.closest('[col-id]')?.getAttribute('col-id') ?? '');
 
   expect(forwarderCode).toBeTruthy();
 
@@ -31,13 +32,19 @@ test('Forwarder Search flow', async ({ page }) => {
   await page.getByRole('button', { name: 'Apply' }).click();
   await page.waitForLoadState('domcontentloaded');
 
-  await expect(
-    page.locator('[col-id="forwarderCode"] a').first()
-  ).toContainText(forwarderCode!);
+  const resultEl = page.locator('[col-id="forwarderCode"] a, [col-id="forwarderCode"] .text-wrapper').first();
+  await expect(resultEl).toContainText(forwarderCode!);
 
   console.log('Forwarder search completed:', forwarderCode);
 
-  await page.locator('[col-id="forwarderCode"] a').first().click();
+  // click the row's first link (a tag) to navigate; .text-wrapper alone won't navigate
+  const rowLink = page.locator('[role="row"]').filter({ hasText: forwarderCode! }).first().locator('a').first();
+  const rowLinkExists = await rowLink.count() > 0;
+  if (rowLinkExists) {
+    await rowLink.click();
+  } else {
+    await page.locator('[role="row"]').filter({ hasText: forwarderCode! }).first().click();
+  }
   await page.waitForURL('**/document/master/forwarder/**', { timeout: 30000 });
   await page.waitForLoadState('domcontentloaded');
 

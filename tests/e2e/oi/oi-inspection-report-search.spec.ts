@@ -7,11 +7,10 @@ test.use({
 async function openInspectionReports(page: Page) {
   await page.goto('/listing/quality/inspectReport/inspectReportView');
   await page.waitForLoadState('domcontentloaded');
-  await page.waitForLoadState('networkidle');
+  await expect(page.getByText(/\d+\s+Records/i)).toBeVisible({ timeout: 30000 });
 
   await page.mouse.move(1200, 300);
   await page.keyboard.press('Escape');
-  await page.waitForLoadState('domcontentloaded');
 }
 
 test('Inspection Report Search flow', async ({ page }) => {

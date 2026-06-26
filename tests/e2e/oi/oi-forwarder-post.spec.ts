@@ -8,12 +8,13 @@ test('Forwarder POST flow', async ({ page }) => {
 
   await page.goto('/listing/master/forwarder/forwView');
   await page.waitForLoadState('domcontentloaded');
-  await page.waitForLoadState('networkidle');
+  await expect(page.getByText(/\d+\s+Records/i)).toBeVisible({ timeout: 30000 });
 
   await page.mouse.move(1200, 300);
   await page.keyboard.press('Escape');
 
-  const forwarderLink = page.locator('[col-id="forwarderCode"] a').first();
+  const forwarderLink = page.locator('[col-id="forwarderCode"] a, [col-id="forwarderCode"] .text-wrapper').first();
+  await forwarderLink.waitFor({ state: 'visible', timeout: 30000 });
   const forwarderCode = (await forwarderLink.textContent())?.trim();
   const colId = await forwarderLink.evaluate(el => el.closest('[col-id]')?.getAttribute('col-id') ?? '');
 
@@ -31,7 +32,14 @@ test('Forwarder POST flow', async ({ page }) => {
   await page.getByRole('button', { name: 'Apply' }).click();
   await page.waitForLoadState('domcontentloaded');
 
-  await page.locator('[col-id="forwarderCode"] a').first().click();
+  // click the row's first link to navigate; .text-wrapper alone won't navigate
+  const resultRow = page.locator('[role="row"]').filter({ hasText: forwarderCode! }).first();
+  const rowLink = resultRow.locator('a').first();
+  if (await rowLink.count() > 0) {
+    await rowLink.click();
+  } else {
+    await resultRow.click();
+  }
 
   await page.waitForURL('**/document/master/forwarder/**', { timeout: 30000 });
   await page.waitForLoadState('domcontentloaded');
