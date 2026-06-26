@@ -5,26 +5,11 @@ test.use({
 });
 
 async function openFacilities(page: Page) {
-  await page.goto('/home');
-
-  await page
-    .getByRole('button')
-    .filter({ hasText: /^$/ })
-    .nth(5)
-    .click();
-
-  const facilitiesLink = page.getByRole('link', { name: 'Facilities' });
-  await facilitiesLink.waitFor({ state: 'visible', timeout: 15000 });
-  await facilitiesLink.click();
-
+  await page.goto('/listing/master/fact/factActiveView');
   await page.waitForLoadState('domcontentloaded');
   await page.waitForLoadState('networkidle');
 
-  //
-  // Move cursor away to dismiss the sidenav overlay
-  //
   await page.mouse.move(1200, 300);
-  await page.waitForLoadState('domcontentloaded');
   await page.keyboard.press('Escape');
   await page.waitForLoadState('domcontentloaded');
 }
@@ -52,11 +37,11 @@ test('Facilities Search flow', async ({ page }) => {
     factoryId
   );
 
-  await page
-    .getByRole('button')
-    .filter({ hasText: 'filter_alt' })
-    .first()
-    .click();
+  try {
+    await page.getByRole('button').filter({ hasText: 'filter_alt' }).nth(1).click({ timeout: 5000 });
+  } catch {
+    await page.locator('.filter-button button').first().click();
+  }
 
   await page
     .getByPlaceholder('Filter...')

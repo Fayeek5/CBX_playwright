@@ -5,62 +5,33 @@ test.use({
 });
 
 test('VPO Search flow', async ({ page }) => {
-    await page.goto('/listing/order/vpo/vpoView');
-
-  await page.waitForLoadState('domcontentloaded');
-
-  await page.mouse.move(1200, 300);
-  await page.keyboard.press('Escape');
+  await page.goto('/listing/order/vpo/vpoView');
 
   await expect(
-    page.locator('[col-id="vpoNo"]').first()
-  ).toBeVisible({
-    timeout:30000
-  });
+    page.getByText(/\d+\s+Records/i)
+  ).toBeVisible({ timeout: 30000 });
 
-  await expect(
-    page.locator('div[col-id="vpoNo"] a').first()
-).toBeVisible({
-    timeout:30000
-});
-
-const vpoNo = (
-    await page
-        .locator('div[col-id="vpoNo"] a')
-        .first()
-        .innerText()
-)?.trim();
+  const vpoNo = (
+    await page.locator('div[col-id="vpoNo"] a').first().textContent()
+  )?.trim();
 
   expect(vpoNo).toBeTruthy();
 
   console.log('Searching VPO:', vpoNo);
 
-  await page
-    .getByRole('button')
-    .filter({ hasText: 'filter_alt' })
-    .first()
-    .evaluate(el => (el as HTMLElement).click());
+  try {
+    await page.getByRole('button').filter({ hasText: 'filter_alt' }).nth(1).click({ timeout: 5000 });
+  } catch {
+    await page.locator('.filter-button button').first().click();
+  }
 
-  await page.waitForLoadState('domcontentloaded');
+  await page.getByPlaceholder('Filter...').fill(vpoNo!);
 
-  await page
-    .getByPlaceholder('Filter...')
-    .fill(vpoNo);
-
-  await page
-    .getByRole('button', {
-      name: 'Apply'
-    })
-    .click();
+  await page.getByRole('button', { name: 'Apply' }).click();
 
   await expect(
-    page.getByRole('link', {
-      name: vpoNo
-    })
-  ).toBeVisible();
+    page.locator('div[col-id="vpoNo"] a').first()
+  ).toContainText(vpoNo!);
 
-  console.log(
-    'VPO search completed'
-  );
-
+  console.log('VPO search completed:', vpoNo);
 });

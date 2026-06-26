@@ -42,11 +42,11 @@ test('Vendor Search flow', async ({ page }) => {
     vendorName
   );
 
-  await page
-    .getByRole('button')
-    .filter({ hasText: 'filter_alt' })
-    .nth(1)
-    .click();
+  try {
+    await page.getByRole('button').filter({ hasText: 'filter_alt' }).nth(1).click({ timeout: 5000 });
+  } catch {
+    await page.locator('.filter-button button').first().click();
+  }
 
   await page
     .getByPlaceholder('Filter...')

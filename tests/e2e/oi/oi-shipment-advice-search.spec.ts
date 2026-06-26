@@ -6,72 +6,40 @@ test.use({
 
 test('Shipment Advice Search flow', async ({ page }) => {
 
-  await page.goto('/');
-
+  await page.goto('/listing/shipment/shipmentAdvice/shipmentAdviceView');
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForLoadState('networkidle');
 
+  await page.mouse.move(1200, 300);
+  await page.keyboard.press('Escape');
+
+  const saLink = page.locator('[col-id="shipmentAdviceNo"] a').first();
+  await saLink.waitFor({ state: 'visible', timeout: 30000 });
+  const saNo = (await saLink.textContent())?.trim();
+
+  expect(saNo).toBeTruthy();
+
+  console.log('Searching Shipment Advice:', saNo);
+
+  try {
+    await page.getByRole('button').filter({ hasText: 'filter_alt' }).nth(1).click({ timeout: 5000 });
+  } catch {
+    await page.locator('.filter-button button').first().click();
+  }
+
+  await page.getByPlaceholder('Filter...').fill(saNo!);
+  await page.getByRole('button', { name: 'Apply' }).click();
   await page.waitForLoadState('domcontentloaded');
-
-  await page
-    .locator(
-      '.tab-list button'
-    )
-    .nth(4)
-    .click();
-
-  await page
-    .getByRole('link', {
-      name: 'Shipment Advice'
-    })
-    .click();
-
-  await page
-    .locator(
-      'app-sidenav .position-fixed.full-size-offset'
-    )
-    .click({ force: true });
-
-  await page.waitForLoadState('domcontentloaded');
-
-  await page.waitForLoadState('networkidle');
-
-  await page.waitForSelector(
-    '[col-id="shipmentAdviceNo"] a',
-    { timeout: 30000 }
-  );
-
-  await page.waitForLoadState('domcontentloaded');
-
-  await page
-    .getByRole('button')
-    .filter({ hasText: 'filter_alt' })
-    .first()
-    .click();
-
-  await page
-    .getByPlaceholder('Filter...')
-    .waitFor({ state: 'visible' });
-
-  await page
-    .getByPlaceholder('Filter...')
-    .fill('SAV2602-000429');
-
-  await page.waitForLoadState('domcontentloaded');
-
-  await page
-    .getByRole('button', {
-      name: 'Apply'
-    })
-    .click();
 
   await expect(
-    page.getByRole('row', {
-      name: /SAV2602-000429/
-    })
-  ).toBeVisible();
+    page.locator('[col-id="shipmentAdviceNo"] a').first()
+  ).toContainText(saNo!);
 
-  console.log(
-    'Shipment Advice search completed'
-  );
+  console.log('Shipment Advice search completed:', saNo);
 
+  await page.locator('[col-id="shipmentAdviceNo"] a').first().click();
+  await page.waitForURL('**/document/**shipment**', { timeout: 30000 });
+  await page.waitForLoadState('domcontentloaded');
+
+  console.log('Opened URL:', page.url());
 });

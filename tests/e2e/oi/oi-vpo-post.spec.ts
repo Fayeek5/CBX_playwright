@@ -9,6 +9,8 @@ test('VPO POST flow', async ({ page }) => {
   await page.goto('/listing/order/vpo/vpoView');
   await page.waitForLoadState('domcontentloaded');
 
+  await expect(page.getByText(/\d+\s+Records/i)).toBeVisible({ timeout: 30000 });
+
   await page.mouse.move(1200, 300);
   await page.keyboard.press('Escape');
 

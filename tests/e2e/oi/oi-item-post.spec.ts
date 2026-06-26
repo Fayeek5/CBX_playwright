@@ -7,7 +7,8 @@ test.use({
 test('Item POST flow', async ({ page }) => {
   await page.goto('/listing/product/item/itemView');
   await page.waitForLoadState('domcontentloaded');
-  await page.waitForLoadState('networkidle');
+
+  await expect(page.getByText(/\d+\s+Records/i)).toBeVisible({ timeout: 30000 });
 
   await page.mouse.move(1200, 300);
   await page.keyboard.press('Escape');
