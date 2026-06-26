@@ -4,7 +4,7 @@ test.use({
   storageState: 'fixtures/.auth/user.json'
 });
 
-test('ASO Shipment Advice POST flow', async ({ page }) => {
+test('Shipment Advice POST flow', async ({ page }) => {
   await page.goto('/listing/shipment/shipmentAdvice/shipmentAdviceView');
   await page.getByRole('button').filter({ hasText: /^$/ }).nth(3).click();
   await page.getByRole('link', { name: 'Shipment Advice' }).click();

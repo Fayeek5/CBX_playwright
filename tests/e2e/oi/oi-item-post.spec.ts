@@ -4,7 +4,7 @@ test.use({
   storageState: 'fixtures/.auth/user.json'
 });
 
-test('ASO Item POST flow', async ({ page }) => {
+test('Item POST flow', async ({ page }) => {
   await page.goto('/listing/product/item/itemView');
   await page.waitForLoadState('domcontentloaded');
   await page.waitForLoadState('networkidle');

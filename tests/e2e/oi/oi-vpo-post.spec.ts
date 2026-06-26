@@ -4,7 +4,7 @@ test.use({
   storageState: 'fixtures/.auth/user.json'
 });
 
-test('ASO VPO POST flow', async ({ page }) => {
+test('VPO POST flow', async ({ page }) => {
 
   await page.goto('/listing/order/vpo/vpoView');
   await page.waitForLoadState('domcontentloaded');

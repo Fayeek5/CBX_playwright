@@ -4,13 +4,13 @@ test.use({
   storageState: 'fixtures/.auth/user.json'
 });
 
-async function openInspectionBookings(page: Page) {
+async function openClaims(page: Page) {
   await page.goto('/home');
   await page.waitForURL('**/home**', { timeout: 30000 });
 
-  await page.getByRole('button').filter({ hasText: /^$/ }).nth(4).click();
+  await page.getByRole('button').filter({ hasText: /^$/ }).nth(3).click();
 
-  const link = page.getByRole('link', { name: 'Inspection Bookings' });
+  const link = page.getByRole('link', { name: 'Claims' });
   await link.waitFor({ state: 'visible', timeout: 15000 });
   await link.click();
 
@@ -23,20 +23,20 @@ async function openInspectionBookings(page: Page) {
   await page.waitForLoadState('domcontentloaded');
 }
 
-test('Inspection Booking Search flow', async ({ page }) => {
+test('Claims Search flow', async ({ page }) => {
 
-  await openInspectionBookings(page);
+  await openClaims(page);
 
-  const bookingNo = (
+  const claimNo = (
     await page
-      .locator('[col-id="inspectBookingNo"] a')
+      .locator('[col-id="claimNo"] a')
       .first()
       .textContent()
   )?.trim();
 
-  expect(bookingNo).toBeTruthy();
+  expect(claimNo).toBeTruthy();
 
-  console.log('Searching Booking No:', bookingNo);
+  console.log('Searching Claim No:', claimNo);
 
   await page
     .getByRole('button')
@@ -46,26 +46,26 @@ test('Inspection Booking Search flow', async ({ page }) => {
 
   await page
     .getByPlaceholder('Filter...')
-    .fill(bookingNo!);
+    .fill(claimNo!);
 
   await page
     .getByRole('button', { name: 'Apply' })
     .click();
 
   await expect(
-    page.locator('[col-id="inspectBookingNo"] a').first()
-  ).toContainText(bookingNo!);
+    page.locator('[col-id="claimNo"] a').first()
+  ).toContainText(claimNo!);
 
-  console.log('Search verified:', bookingNo);
+  console.log('Search verified:', claimNo);
 
   await page
-    .locator('[col-id="inspectBookingNo"] a')
+    .locator('[col-id="claimNo"] a')
     .first()
     .click();
 
-  await page.waitForURL('**/document/quality/inspectBooking/**', { timeout: 30000 });
+  await page.waitForURL('**/document/order/claim/**', { timeout: 30000 });
   await page.waitForLoadState('domcontentloaded');
 
-  console.log('Inspection Booking search completed:', bookingNo);
+  console.log('Claims search completed:', claimNo);
   console.log('Opened URL:', page.url());
 });

@@ -4,7 +4,7 @@ test.use({
   storageState: 'fixtures/.auth/user.json'
 });
 
-test('ASO Shipment Advice Search flow', async ({ page }) => {
+test('Shipment Advice Search flow', async ({ page }) => {
 
   await page.goto('/');
 

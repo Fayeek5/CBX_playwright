@@ -29,7 +29,7 @@ async function openFacilities(page: Page) {
   await page.waitForLoadState('domcontentloaded');
 }
 
-test('ASO Facilities Search flow', async ({ page }) => {
+test('Facilities Search flow', async ({ page }) => {
   await openFacilities(page);
 
   await expect(

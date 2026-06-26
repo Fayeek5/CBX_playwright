@@ -34,7 +34,7 @@ async function openFacilities(page: Page) {
   await page.waitForLoadState('domcontentloaded');
 }
 
-test('ASO Facilities POST flow', async ({ page }) => {
+test('Facilities POST flow', async ({ page }) => {
 
   await openFacilities(page);
 

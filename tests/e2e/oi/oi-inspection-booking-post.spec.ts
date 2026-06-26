@@ -23,7 +23,7 @@ async function openInspectionBookings(page: Page) {
   await page.waitForLoadState('domcontentloaded');
 }
 
-test('ASO Inspection Booking POST flow', async ({ page }) => {
+test('Inspection Booking POST flow', async ({ page }) => {
 
   await openInspectionBookings(page);
 

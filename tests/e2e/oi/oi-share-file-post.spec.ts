@@ -7,7 +7,7 @@ test.use({
   storageState: 'fixtures/.auth/user.json'
 });
 
-test('ASO Share File POST flow', async ({ page }) => {
+test('Share File POST flow', async ({ page }) => {
 
 const tempFile = path.join(
   os.tmpdir(),

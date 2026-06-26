@@ -4,7 +4,7 @@ test.use({
   storageState: 'fixtures/.auth/user.json'
 });
 
-test('ASO Vendor POST flow', async ({ page }) => {
+test('Vendor POST flow', async ({ page }) => {
   console.log('Before goto:', page.url());
 
   await page.goto('/listing/business/vendor/vendorView');

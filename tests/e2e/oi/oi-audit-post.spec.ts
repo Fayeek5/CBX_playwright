@@ -23,7 +23,7 @@ async function openAudits(page: Page) {
   await page.waitForLoadState('domcontentloaded');
 }
 
-test('ASO Audit POST flow', async ({ page }) => {
+test('Audit POST flow', async ({ page }) => {
 
   await openAudits(page);
 
