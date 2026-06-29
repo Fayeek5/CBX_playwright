@@ -1,0 +1,141 @@
+import { open } from '../../helpers/navigation';
+import { markActive, markInactive } from '../../helpers/markAs';
+import { save } from '../../helpers/save';
+import { test, expect } from '@playwright/test';
+import { closeSidebar } from '../../../helpers/sidebar-helper';
+
+test.use({
+  storageState: 'fixtures/.auth/user.json'
+});
+
+test('ASO Item POST flow', async ({ page }) => {
+
+  await page.goto('/listing/product/item/itemView');
+
+  //
+  // Fetch Item No dynamically
+  //
+  const itemNo = (
+    await page
+      .locator('[col-id="itemNo"] a')
+      .first()
+      .textContent()
+  )?.trim();
+
+  expect(itemNo).toBeTruthy();
+
+  console.log('Searching Item:', itemNo);
+
+  //
+  // Search Item
+  //
+  await page
+    .getByRole('button')
+    .filter({ hasText: 'filter_alt' })
+    .first()
+    .click();
+
+  await page.getByPlaceholder('Filter...').fill(itemNo!);
+
+  await page
+    .getByRole('button', {
+      name: 'Apply'
+    })
+    .click();
+
+  //
+  // Open Item
+  //
+  const itemLink = page
+  .getByRole('link', {
+    name: itemNo!
+  })
+  .first();
+
+await itemLink.click();
+
+await expect(itemLink).toBeVisible();
+
+await page.waitForTimeout(1000);
+
+await page
+  .getByRole('menuitem', {
+    name: 'Tools'
+  })
+  .click();
+
+await page.waitForTimeout(500);
+
+await page
+  .getByRole('menuitem', {
+    name: 'Copy'
+  })
+  .click();
+
+  //
+  // Save & Confirm
+  //
+  await page
+    .getByRole('button', {
+      name: 'Save & Confirm'
+    })
+    .click();
+
+  console.log('Save & Confirm completed');
+
+  await page.waitForLoadState('domcontentloaded');
+
+  
+
+
+const markAs = page.getByRole('menuitem', {
+  name: 'Mark as'
+});
+
+await expect(markAs).toBeVisible({
+  timeout: 30000
+});
+
+await expect(markAs).toBeEnabled({
+  timeout: 30000
+});
+
+await markAs.click();
+
+const inactive = page.getByRole('menuitem', {
+  name: 'Set to Inactive'
+});
+
+await expect(inactive).toBeVisible({
+  timeout: 30000
+});
+
+await inactive.click();
+
+console.log('Marked Inactive');
+
+await expect(markAs).toBeVisible({
+  timeout: 30000
+});
+
+await expect(markAs).toBeEnabled({
+  timeout: 30000
+});
+
+await markAs.click();
+
+const active = page.getByRole('menuitem', {
+  name: 'Set to Active'
+});
+
+await expect(active).toBeVisible({
+  timeout: 30000
+});
+
+await active.click();
+
+console.log('Marked Active');
+
+
+
+});

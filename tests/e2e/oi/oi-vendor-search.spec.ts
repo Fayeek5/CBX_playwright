@@ -1,0 +1,75 @@
+import { test, expect } from '@playwright/test';
+
+test.use({
+  storageState: 'fixtures/.auth/user.json'
+});
+
+test('Vendor Search flow', async ({ page }) => {
+
+  await page.goto('/listing/master/vendor/vendorView');
+
+  await expect(
+    page.getByText(/\d+\s+Records/i)
+  ).toBeVisible({
+    timeout: 30000
+  });
+
+  const supplierId = (
+    await page
+      .getByRole('gridcell')
+      .nth(2)
+      .textContent()
+  )?.trim();
+
+  expect(supplierId).toBeTruthy();
+
+  const vendorNameLink = page.locator('[col-id="businessName"] a').first();
+  const vendorName = (await vendorNameLink.textContent())?.trim();
+  const colId = await vendorNameLink.evaluate(el => el.closest('[col-id]')?.getAttribute('col-id') ?? '');
+
+  expect(vendorName).toBeTruthy();
+
+  console.log(
+    'Searching Supplier ID:',
+    supplierId
+  );
+
+  console.log(
+    'Vendor Name:',
+    vendorName
+  );
+
+  try {
+    await page.locator(`[col-id="${colId}"] .filter-button button`).click({ timeout: 5000 });
+  } catch {
+    await page.locator('.filter-button button').first().click();
+  }
+
+  await page
+    .getByPlaceholder('Filter...')
+    .fill(supplierId!);
+
+  await page
+    .getByRole('button', {
+      name: 'Apply'
+    })
+    .click();
+
+  await expect(
+    page.getByRole('gridcell', {
+      name: supplierId!
+    })
+  ).toBeVisible();
+
+  await page
+    .getByRole('row', {
+      name: new RegExp(vendorName!)
+    })
+    .getByLabel('', { exact: true })
+
+  console.log(
+    'Vendor search completed:',
+    supplierId
+  );
+
+});
