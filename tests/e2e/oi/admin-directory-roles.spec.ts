@@ -7,39 +7,52 @@ test.use({
 test('Admin Directory Roles Search flow', async ({ page }) => {
   await page.goto('/');
   await page.waitForLoadState('domcontentloaded');
-  await page.waitForTimeout(2000);
+  // Wait until the sidebar is fully rendered (more than 5 tab-icon buttons)
+  await page.waitForFunction(
+    () => document.querySelectorAll('button[class*="tab-icon-button"]').length > 5,
+    { timeout: 15000 }
+  );
   await page.keyboard.press('Escape');
   await page.waitForTimeout(500);
 
-  // Click sidebar icons until Admin submenu (Directory link) becomes visible
-  const navButtons = page.locator('nav button, aside button, [class*="sidebar"] button, [class*="nav"] button');
-  const btnCount = await navButtons.count();
+  // Sidebar icon buttons have class "tab-icon-button" — iterate to find Admin icon
+  // Start from index 1 to skip the search icon (index 0)
+  const sidebarBtns = page.locator('button[class*="tab-icon-button"]');
+  const btnCount = await sidebarBtns.count();
+  console.log('Sidebar icon buttons:', btnCount);
+
   for (let i = 1; i < btnCount; i++) {
-    await navButtons.nth(i).click();
-    await page.waitForTimeout(600);
-    if (await page.getByText('Directory', { exact: true }).first().isVisible().catch(() => false)) break;
+    await page.keyboard.press('Escape'); // close any open panels first
+    await sidebarBtns.nth(i).click({ force: true }).catch(() => {});
+    await page.waitForTimeout(800);
+    const hasDir = await page.getByRole('link', { name: 'Directory' }).first().isVisible().catch(() => false);
+    if (hasDir) {
+      console.log('Admin icon found at index', i);
+      break;
+    }
   }
 
-  // Click Directory → lands on Directory listing
-  await page.getByText('Directory', { exact: true }).first().click();
+  // Click Directory link — sidenav stays open with sub-items
+  await page.getByRole('link', { name: 'Directory' }).first().click();
   await page.waitForLoadState('domcontentloaded');
   await page.waitForTimeout(1000);
 
-  // Close the sidebar panel by clicking main content area
+  // Click Directory - Users dropdown (JS click to bypass module-title overlay)
+  await page.evaluate(() => {
+    const btn = Array.from(document.querySelectorAll('button'))
+      .find(b => b.textContent?.includes('Directory - Users'));
+    (btn as HTMLButtonElement)?.click();
+  });
+  await page.waitForTimeout(800);
+  // Click Roles sub-item
+  await page.getByRole('button', { name: 'Roles' }).click({ force: true });
+  await page.waitForLoadState('domcontentloaded');
+  await page.waitForTimeout(1000);
+
+  // Close sidenav so it doesn't block grid interactions
   await page.mouse.click(700, 400);
   await page.locator('app-sidenav').waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {});
   await page.waitForTimeout(500);
-
-  // Click the Directory-Users dropdown button → shows sub-items (Users, Groups, Roles...)
-  await page.getByRole('button', { name: 'Directory - Users' }).click();
-  await page.waitForTimeout(500);
-
-  // Click Roles from the dropdown
-  await page.getByRole('button', { name: 'Roles' }).click();
-  await page.waitForLoadState('domcontentloaded');
-  await page.waitForTimeout(1000);
-
-  await page.mouse.move(1200, 300);
   await page.keyboard.press('Escape');
 
   console.log('Roles page URL:', page.url());
