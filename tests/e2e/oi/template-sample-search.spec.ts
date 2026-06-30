@@ -11,13 +11,11 @@ test('Template Sample Related Search flow', async ({ page }) => {
   await page.mouse.move(1200, 300);
   await page.keyboard.press('Escape');
 
-  const hasRecords = await page.getByText(/\d+\s+Records/i).waitFor({ state: 'visible', timeout: 30000 }).then(() => true).catch(() => false);
-  if (!hasRecords) {
+  const nameLink = page.locator('[role="row"] a').first();
+  const hasLink = await nameLink.waitFor({ state: 'visible', timeout: 30000 }).then(() => true).catch(() => false);
+  if (!hasLink) {
     throw new Error('No records found in Template Sample Related listing — marking as FAILED');
   }
-
-  const nameLink = page.locator('[role="row"] a').first();
-  await nameLink.waitFor({ state: 'visible', timeout: 15000 });
   const templateName = (await nameLink.textContent())?.trim();
   const colId = await nameLink.evaluate(el => el.closest('[col-id]')?.getAttribute('col-id') ?? '');
 
