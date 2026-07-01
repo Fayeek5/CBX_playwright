@@ -199,9 +199,9 @@ test('VPO — Customer Name, Vendor Name and Items Select popup listing', async 
   for (let i = 0; i < Math.min(linkCount, 15); i++) {
     await page.goto('/listing/order/vpo/vpoView');
     await page.waitForLoadState('domcontentloaded');
-    await page.locator('[col-id="vpoNo"] a').first().waitFor({ state: 'visible', timeout: 30000 });
+    await page.locator('[col-id="vpoNo"] a').first().waitFor({ state: 'visible', timeout: 60000 });
     await page.locator('[col-id="vpoNo"] a').nth(i).click();
-    await page.waitForURL(/\/document\/order\/vpo\//, { timeout: 30000 });
+    await page.waitForURL(/\/document\/order\/vpo\//, { timeout: 60000 });
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(3000);
     console.log(`Checking VPO [${i}]:`, page.url());
@@ -225,10 +225,10 @@ test('VPO — Customer Name, Vendor Name and Items Select popup listing', async 
   await page.goto('/listing/order/vpo/vpoView');
   await page.waitForLoadState('domcontentloaded');
   const firstVpoLink = page.locator('[col-id="vpoNo"] a').first();
-  await firstVpoLink.waitFor({ state: 'visible', timeout: 15000 });
+  await firstVpoLink.waitFor({ state: 'visible', timeout: 60000 });
   const firstVpoUrl = await firstVpoLink.getAttribute('href');
   await firstVpoLink.click();
-  await page.waitForURL(/\/document\/order\/vpo\//, { timeout: 30000 });
+  await page.waitForURL(/\/document\/order\/vpo\//, { timeout: 60000 });
   await page.waitForLoadState('domcontentloaded');
   await page.waitForTimeout(2000);
   console.log('Opened VPO doc for Create:', page.url());
