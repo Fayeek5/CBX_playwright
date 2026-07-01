@@ -1,0 +1,315 @@
+
+Running 16 tests using 1 worker
+
+  ✘   1 [chromium] › tests/e2e/oi/oi-factory-post.spec.ts:11:5 › ASO Factory POST flow (23.0s)
+  ✘   2 [chromium] › tests/e2e/oi/oi-factory-search.spec.ts:11:5 › ASO Factory Search flow (19.5s)
+Searching Forwarder: FWDR000001
+Copy clicked
+Save & Confirm failed
+  ✘   3 [chromium] › tests/e2e/oi/oi-forwarder-post.spec.ts:11:5 › ASO Forwarder POST flow (23.9s)
+Searching Forwarder: FWDR000002
+Forwarder search completed: FWDR000002
+  ✓   4 [chromium] › tests/e2e/oi/oi-forwarder-search.spec.ts:11:5 › ASO Forwarder Search flow (7.7s)
+Searching Item: ITM2509-011173
+  ✘   5 [chromium] › tests/e2e/oi/oi-item-post.spec.ts:11:5 › ASO Item POST flow (23.9s)
+Searching Item: ITM2509-011173
+Item search completed
+  ✓   6 [chromium] › tests/e2e/oi/oi-item-search.spec.ts:11:5 › ASO Item Search flow (14.0s)
+Original SHA256: 855f0c9fa1e3a2d8a7e8b9e110e995489e60ee15d5eda7f74986368be9185792
+  ✘   7 [chromium] › tests/e2e/oi/oi-share-file-post.spec.ts:15:5 › ASO Share File POST flow (20.1s)
+Clicked Tools
+Copy clicked
+  ✘   8 [chromium] › tests/e2e/oi/oi-shipment-advice-post.spec.ts:10:5 › ASO Shipment Advice POST flow (30.0s)
+Shipment Advice search completed
+  ✓   9 [chromium] › tests/e2e/oi/oi-shipment-advice-search.spec.ts:11:5 › ASO Shipment Advice Search flow (8.9s)
+  ✘  10 [chromium] › tests/e2e/oi/oi-vendor-post.spec.ts:11:5 › ASO Vendor POST flow (26.5s)
+Searching Supplier ID: V001015
+Vendor Name: "Unicorn Carpets" S.R.L.
+Vendor search completed: V001015
+  ✓  11 [chromium] › tests/e2e/oi/oi-vendor-search.spec.ts:11:5 › ASO Vendor Search flow (5.5s)
+Copy flow completed
+  ✓  12 [chromium] › tests/e2e/oi/oi-vpo-post.spec.ts:10:5 › ASO VPO POST flow (22.2s)
+  ✘  13 [chromium] › tests/e2e/oi/oi-vpo-search.spec.ts:11:5 › ASO VPO Search flow (31.1s)
+Mark as not present
+  ✓  14 [chromium] › tests/e2e/oi/vendor-post-recording.spec.ts:7:5 › test (25.7s)
+VPO: VPO2606-000268
+Marked Inactive
+Marked Active
+  ✓  15 [chromium] › tests/e2e/oi/vpo-post-recording.spec.ts:7:5 › test (23.4s)
+VPO: VPO2512-000368
+  ✓  16 [chromium] › tests/e2e/oi/vpo-recording.spec.ts:8:5 › test (15.6s)
+
+
+  1) [chromium] › tests/e2e/oi/oi-factory-post.spec.ts:11:5 › ASO Factory POST flow ────────────────
+
+    TimeoutError: locator.click: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('link', { name: 'Factories' })[22m
+
+
+      26 |       name: 'Factories'
+      27 |     })
+    > 28 |     .click();
+         |      ^
+      29 |
+      30 |   //
+      31 |   // Wait until Factory page is loaded
+        at /Users/ummarfaeeque/Projects/cbx-playwright/OI_Regression_Automation_Package/tests/e2e/oi/oi-factory-post.spec.ts:28:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/oi-oi-factory-post-ASO-Factory-POST-flow-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/oi-oi-factory-post-ASO-Factory-POST-flow-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/oi-oi-factory-post-ASO-Factory-POST-flow-chromium/error-context.md
+
+  2) [chromium] › tests/e2e/oi/oi-factory-search.spec.ts:11:5 › ASO Factory Search flow ────────────
+
+    TimeoutError: locator.click: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('link', { name: 'Factories' })[22m
+
+
+      26 |       name: 'Factories'
+      27 |     })
+    > 28 |     .click();
+         |      ^
+      29 |
+      30 |   //
+      31 |   // Wait until Factory page is loaded
+        at /Users/ummarfaeeque/Projects/cbx-playwright/OI_Regression_Automation_Package/tests/e2e/oi/oi-factory-search.spec.ts:28:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/oi-oi-factory-search-ASO-Factory-Search-flow-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/oi-oi-factory-search-ASO-Factory-Search-flow-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/oi-oi-factory-search-ASO-Factory-Search-flow-chromium/error-context.md
+
+  3) [chromium] › tests/e2e/oi/oi-forwarder-post.spec.ts:11:5 › ASO Forwarder POST flow ────────────
+
+    TimeoutError: locator.click: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('button', { name: 'Cancel' })[22m
+    [2m    - locator resolved to <button disabled _ngcontent-ng-c3141612426="" class="confirm-btn flex-noshrink flat-button margin-x-4 ng-star-inserted"> Cancel </button>[22m
+    [2m  - attempting click action[22m
+    [2m    2 × waiting for element to be visible, enabled and stable[22m
+    [2m      - element is not enabled[22m
+    [2m    - retrying click action[22m
+    [2m    - waiting 20ms[22m
+    [2m    2 × waiting for element to be visible, enabled and stable[22m
+    [2m      - element is not enabled[22m
+    [2m    - retrying click action[22m
+    [2m      - waiting 100ms[22m
+    [2m    2 × waiting for element to be visible, enabled and stable[22m
+    [2m      - element is not enabled[22m
+    [2m    - retrying click action[22m
+    [2m      - waiting 500ms[22m
+    [2m    - waiting for element to be visible, enabled and stable[22m
+    [2m  - element was detached from the DOM, retrying[22m
+
+
+      83 |     console.log('Save & Confirm failed');
+      84 |
+    > 85 |     await cancelButton.click();
+         |                        ^
+      86 |
+      87 |     console.log('Clicked Cancel');
+      88 |
+        at /Users/ummarfaeeque/Projects/cbx-playwright/OI_Regression_Automation_Package/tests/e2e/oi/oi-forwarder-post.spec.ts:85:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/oi-oi-forwarder-post-ASO-Forwarder-POST-flow-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/oi-oi-forwarder-post-ASO-Forwarder-POST-flow-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/oi-oi-forwarder-post-ASO-Forwarder-POST-flow-chromium/error-context.md
+
+  4) [chromium] › tests/e2e/oi/oi-item-post.spec.ts:11:5 › ASO Item POST flow ──────────────────────
+
+    TimeoutError: locator.click: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('menuitem', { name: 'Copy' })[22m
+
+
+      71 |     name: 'Copy'
+      72 |   })
+    > 73 |   .click();
+         |    ^
+      74 |
+      75 |   //
+      76 |   // Save & Confirm
+        at /Users/ummarfaeeque/Projects/cbx-playwright/OI_Regression_Automation_Package/tests/e2e/oi/oi-item-post.spec.ts:73:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/oi-oi-item-post-ASO-Item-POST-flow-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/oi-oi-item-post-ASO-Item-POST-flow-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/oi-oi-item-post-ASO-Item-POST-flow-chromium/error-context.md
+
+  5) [chromium] › tests/e2e/oi/oi-share-file-post.spec.ts:15:5 › ASO Share File POST flow ──────────
+
+    TimeoutError: locator.click: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('link', { name: 'Share Content' })[22m
+
+
+      51 |       name: 'Share Content'
+      52 |     })
+    > 53 |     .click();
+         |      ^
+      54 |
+      55 |   await page.mouse.move(500, 300);
+      56 |
+        at /Users/ummarfaeeque/Projects/cbx-playwright/OI_Regression_Automation_Package/tests/e2e/oi/oi-share-file-post.spec.ts:53:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/oi-oi-share-file-post-ASO-Share-File-POST-flow-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/oi-oi-share-file-post-ASO-Share-File-POST-flow-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/oi-oi-share-file-post-ASO-Share-File-POST-flow-chromium/error-context.md
+
+  6) [chromium] › tests/e2e/oi/oi-shipment-advice-post.spec.ts:10:5 › ASO Shipment Advice POST flow 
+
+    TimeoutError: locator.click: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('button', { name: 'Cancel' })[22m
+    [2m    - locator resolved to <button _ngcontent-ng-c3141612426="" class="confirm-btn flex-noshrink flat-button margin-x-4 ng-star-inserted"> Cancel </button>[22m
+    [2m  - attempting click action[22m
+    [2m    2 × waiting for element to be visible, enabled and stable[22m
+    [2m      - element is not enabled[22m
+    [2m    - retrying click action[22m
+    [2m    - waiting 20ms[22m
+    [2m    2 × waiting for element to be visible, enabled and stable[22m
+    [2m      - element is not enabled[22m
+    [2m    - retrying click action[22m
+    [2m      - waiting 100ms[22m
+    [2m    24 × waiting for element to be visible, enabled and stable[22m
+    [2m       - element is not enabled[22m
+    [2m     - retrying click action[22m
+    [2m       - waiting 500ms[22m
+    [2m    - waiting for element to be visible, enabled and stable[22m
+    [2m  - element was detached from the DOM, retrying[22m
+
+
+      67 |       name: 'Cancel'
+      68 |     })
+    > 69 |     .click();
+         |      ^
+      70 |
+      71 |   const yesButton = page.locator(
+      72 |     'button[cdkfocusinitial].close-button-class'
+        at /Users/ummarfaeeque/Projects/cbx-playwright/OI_Regression_Automation_Package/tests/e2e/oi/oi-shipment-advice-post.spec.ts:69:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/oi-oi-shipment-advice-post-ASO-Shipment-Advice-POST-flow-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/oi-oi-shipment-advice-post-ASO-Shipment-Advice-POST-flow-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/oi-oi-shipment-advice-post-ASO-Shipment-Advice-POST-flow-chromium/error-context.md
+
+  7) [chromium] › tests/e2e/oi/oi-vendor-post.spec.ts:11:5 › ASO Vendor POST flow ──────────────────
+
+    TimeoutError: locator.click: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('button', { name: 'Cancel' })[22m
+    [2m    - locator resolved to <button _ngcontent-ng-c3141612426="" class="confirm-btn flex-noshrink flat-button margin-x-4 ng-star-inserted"> Cancel </button>[22m
+    [2m  - attempting click action[22m
+    [2m    2 × waiting for element to be visible, enabled and stable[22m
+    [2m      - element is not enabled[22m
+    [2m    - retrying click action[22m
+    [2m    - waiting 20ms[22m
+    [2m    2 × waiting for element to be visible, enabled and stable[22m
+    [2m      - element is not enabled[22m
+    [2m    - retrying click action[22m
+    [2m      - waiting 100ms[22m
+    [2m    13 × waiting for element to be visible, enabled and stable[22m
+    [2m       - element is not enabled[22m
+    [2m     - retrying click action[22m
+    [2m       - waiting 500ms[22m
+    [2m    - waiting for element to be visible, enabled and stable[22m
+    [2m  - element was detached from the DOM, retrying[22m
+
+
+      50 |       name: 'Cancel'
+      51 |     })
+    > 52 |     .click();
+         |      ^
+      53 |
+      54 |   await page
+      55 |     .getByRole('button', {
+        at /Users/ummarfaeeque/Projects/cbx-playwright/OI_Regression_Automation_Package/tests/e2e/oi/oi-vendor-post.spec.ts:52:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/oi-oi-vendor-post-ASO-Vendor-POST-flow-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/oi-oi-vendor-post-ASO-Vendor-POST-flow-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/oi-oi-vendor-post-ASO-Vendor-POST-flow-chromium/error-context.md
+
+  8) [chromium] › tests/e2e/oi/oi-vpo-search.spec.ts:11:5 › ASO VPO Search flow ────────────────────
+
+    TimeoutError: page.waitForLoadState: Timeout 30000ms exceeded.
+    =========================== logs ===========================
+      "commit" event fired
+      "domcontentloaded" event fired
+      "load" event fired
+    ============================================================
+
+      14 |   await page.goto('/listing/order/vpo/vpoView');
+      15 |
+    > 16 |   await page.waitForLoadState('networkidle');
+         |              ^
+      17 |
+      18 |   await page.waitForLoadState('domcontentloaded');
+      19 |
+        at /Users/ummarfaeeque/Projects/cbx-playwright/OI_Regression_Automation_Package/tests/e2e/oi/oi-vpo-search.spec.ts:16:14
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/oi-oi-vpo-search-ASO-VPO-Search-flow-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/oi-oi-vpo-search-ASO-VPO-Search-flow-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/oi-oi-vpo-search-ASO-VPO-Search-flow-chromium/error-context.md
+
+  8 failed
+    [chromium] › tests/e2e/oi/oi-factory-post.spec.ts:11:5 › ASO Factory POST flow ─────────────────
+    [chromium] › tests/e2e/oi/oi-factory-search.spec.ts:11:5 › ASO Factory Search flow ─────────────
+    [chromium] › tests/e2e/oi/oi-forwarder-post.spec.ts:11:5 › ASO Forwarder POST flow ─────────────
+    [chromium] › tests/e2e/oi/oi-item-post.spec.ts:11:5 › ASO Item POST flow ───────────────────────
+    [chromium] › tests/e2e/oi/oi-share-file-post.spec.ts:15:5 › ASO Share File POST flow ───────────
+    [chromium] › tests/e2e/oi/oi-shipment-advice-post.spec.ts:10:5 › ASO Shipment Advice POST flow ─
+    [chromium] › tests/e2e/oi/oi-vendor-post.spec.ts:11:5 › ASO Vendor POST flow ───────────────────
+    [chromium] › tests/e2e/oi/oi-vpo-search.spec.ts:11:5 › ASO VPO Search flow ─────────────────────
+  8 passed (5.4m)
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report[39m
+[36m[39m

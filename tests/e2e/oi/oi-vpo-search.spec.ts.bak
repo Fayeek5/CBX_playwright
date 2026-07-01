@@ -1,0 +1,57 @@
+import { open } from '../../helpers/navigation';
+import { markActive, markInactive } from '../../helpers/markAs';
+import { save } from '../../helpers/save';
+import { test, expect } from '@playwright/test';
+import { closeSidebar } from '../../../helpers/sidebar-helper';
+
+test.use({
+  storageState: 'fixtures/.auth/user.json'
+});
+
+test('ASO VPO Search flow', async ({ page }) => {
+  const vpoNo = (
+    await page
+      .locator('[col-id="vpoNo"] a')
+      .first()
+      .textContent()
+  )?.trim();
+
+  expect(vpoNo).toBeTruthy();
+
+  console.log('Searching VPO:', vpoNo);
+
+  await page.goto('/listing/order/vpo/vpoView');
+
+  await page.waitForLoadState('networkidle');
+
+  await page.waitForLoadState('domcontentloaded');
+
+  await page
+    .getByRole('button')
+    .filter({ hasText: 'filter_alt' })
+    .first()
+    .evaluate(el => (el as HTMLElement).click());
+
+  await page.waitForLoadState('domcontentloaded');
+
+  await page
+    .getByPlaceholder('Filter...')
+    .fill(vpoNo);
+
+  await page
+    .getByRole('button', {
+      name: 'Apply'
+    })
+    .click();
+
+  await expect(
+    page.getByRole('link', {
+      name: vpoNo
+    })
+  ).toBeVisible();
+
+  console.log(
+    'VPO search completed'
+  );
+
+});

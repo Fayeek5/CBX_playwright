@@ -1,0 +1,19 @@
+import { test, expect } from '@playwright/test';
+
+test.use({
+  storageState: 'fixtures/.auth/user.json'
+});
+
+test('test', async ({ page }) => {
+  await page.goto('https://oi-upgrade-qa.tradebeyond.com/listing/product/item/itemView');
+  await page.getByRole('link', { name: 'ITM2509-011173' }).click();
+  await page.getByRole('menuitem', { name: 'Tools' }).click();
+  await page.getByRole('menuitem', { name: 'Copy' }).click();
+  await page.getByRole('button', { name: 'Save & Confirm' }).click();
+  await page.goto('https://oi-upgrade-qa.tradebeyond.com/document/product/item/ITM2606-000122/1');
+  await page.getByRole('menuitem', { name: 'Mark as' }).click();
+  await page.getByRole('menuitem', { name: 'Set to Inactive' }).click();
+  await page.getByRole('menuitem', { name: 'Mark as' }).click();
+  await page.getByRole('menuitem', { name: 'Set to Active' }).click();
+  await page.goto('https://oi-upgrade-qa.tradebeyond.com/document/product/item/ITM2606-000122/3');
+});
