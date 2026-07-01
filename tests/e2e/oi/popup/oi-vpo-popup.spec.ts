@@ -97,11 +97,11 @@ async function isInEditMode(page: any): Promise<boolean> {
 }
 
 async function dismissWarning(page: any): Promise<boolean> {
-  // Use JS evaluate to find the exact OK button in a warning dialog (exact text match)
+  // Handle warning dialogs: UAT uses "OK", QA uses "yes"
   const dismissed = await page.evaluate(() => {
-    const okBtn = Array.from(document.querySelectorAll('button'))
-      .find(b => b.textContent?.trim() === 'OK' && (b as HTMLElement).offsetParent !== null);
-    if (okBtn) { (okBtn as HTMLElement).click(); return true; }
+    const btn = Array.from(document.querySelectorAll('button'))
+      .find(b => ['OK', 'yes', 'Yes'].includes(b.textContent?.trim() ?? '') && (b as HTMLElement).offsetParent !== null);
+    if (btn) { (btn as HTMLElement).click(); return true; }
     return false;
   });
   if (dismissed) await page.waitForTimeout(800);
@@ -136,15 +136,45 @@ async function verifyItemsSelectPopup(page: any) {
   await page.waitForTimeout(1000);
   await dismissWarning(page);
 
-  // Click Select... from dropdown
+  // Log visible interactive elements after Add to understand dropdown structure
+  const afterAddSnapshot = await page.evaluate(() => {
+    const visible = Array.from(document.querySelectorAll(
+      '[role="menuitem"], .mat-menu-item, .dropdown-menu li, .dropdown-menu a, ' +
+      '.cdk-overlay-container li, .cdk-overlay-container a, .cdk-overlay-container button'
+    )).filter(e => (e as HTMLElement).offsetParent !== null)
+      .map(e => ({ tag: e.tagName, text: e.textContent?.trim()?.slice(0, 50), role: e.getAttribute('role') }));
+    return visible;
+  });
+  console.log('Visible dropdown elements after Add:', JSON.stringify(afterAddSnapshot));
+
+  // Click Select... — try multiple container patterns
   const selectClicked = await page.evaluate(() => {
-    const el = Array.from(document.querySelectorAll('a, li, button, span, [role="menuitem"]'))
-      .find(e =>
-        /select/i.test(e.textContent?.trim() ?? '') &&
-        (e as HTMLElement).offsetParent !== null
-      );
-    if (el) { (el as HTMLElement).click(); return true; }
-    return false;
+    // First: CDK overlay
+    let el = Array.from(document.querySelectorAll(
+      '.cdk-overlay-container [role="menuitem"], .cdk-overlay-container .mat-menu-item, ' +
+      '.cdk-overlay-container li, .cdk-overlay-container a, .cdk-overlay-container button'
+    )).find(e => /^select/i.test(e.textContent?.trim() ?? '') && (e as HTMLElement).offsetParent !== null);
+
+    // Second: Bootstrap/generic dropdown
+    if (!el) {
+      el = Array.from(document.querySelectorAll(
+        '.dropdown-menu a, .dropdown-menu li, .dropdown-menu button, ' +
+        '[role="menu"] a, [role="menu"] li, [role="menu"] button, [role="menuitem"]'
+      )).find(e => /^select/i.test(e.textContent?.trim() ?? '') && (e as HTMLElement).offsetParent !== null);
+    }
+
+    // Third: any newly visible li/a that starts with "Select"
+    if (!el) {
+      el = Array.from(document.querySelectorAll('li, a'))
+        .find(e =>
+          /^select/i.test(e.textContent?.trim() ?? '') &&
+          (e as HTMLElement).offsetParent !== null &&
+          (e as HTMLElement).getBoundingClientRect().width > 0
+        );
+    }
+
+    if (el) { (el as HTMLElement).click(); return (el as HTMLElement).textContent?.trim(); }
+    return null;
   });
   console.log('Items Select option clicked:', selectClicked);
 
