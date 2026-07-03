@@ -14,7 +14,23 @@
     "codegen": "playwright codegen https://oi-uat.tradebeyond.com/",
     "typecheck": "tsc --noEmit",
     "install:browsers": "playwright install",
-    "regression:fresh": "rm -f fixtures/.auth/user.json && npx playwright test tests/auth.setup.ts --headed && npx playwright test tests/e2e/regression-orchestrator.spec.ts --headed --workers=1 --retries=1"
+    "regression:fresh": "rm -f fixtures/.auth/user.json && npx playwright test tests/auth.setup.ts --headed && npx playwright test tests/e2e/regression-orchestrator.spec.ts --headed --workers=1 --retries=1",
+
+    "env:cbx-dev": "cp .env.cbx-dev .env",
+    "env:cbx-uat": "cp .env.cbx-uat .env",
+    "env:oi-uat": "cp .env.oi-uat .env",
+
+    "cbx-dev:setup": "npm run env:cbx-dev && npx playwright test --project=setup",
+    "cbx-dev:test": "npm run env:cbx-dev && npx playwright test tests/e2e/cbx-dev/",
+    "cbx-dev:test:headed": "npm run env:cbx-dev && npx playwright test tests/e2e/cbx-dev/ --headed",
+
+    "cbx-uat:setup": "npm run env:cbx-uat && npx playwright test --project=setup",
+    "cbx-uat:test": "npm run env:cbx-uat && npx playwright test tests/e2e/cbx-dev/",
+    "cbx-uat:test:headed": "npm run env:cbx-uat && npx playwright test tests/e2e/cbx-dev/ --headed",
+
+    "oi-uat:setup": "npm run env:oi-uat && npx playwright test --project=setup",
+    "oi-uat:test": "npm run env:oi-uat && npx playwright test tests/e2e/oi/",
+    "oi-uat:test:headed": "npm run env:oi-uat && npx playwright test tests/e2e/oi/ --headed"
   },
   "keywords": [
     "playwright",
