@@ -73,17 +73,15 @@ export async function navigateToListing(page: Page, subModuleName: string): Prom
 export async function setDateToLast12Months(page: Page): Promise<void> {
   const trigger = page.getByRole('button', { name: /any.?time/i }).first();
   if (await trigger.count() === 0) return;
-  // Use dispatchEvent to bypass any sidenav overlay that intercepts pointer events
-  await trigger.dispatchEvent('click');
-  await page.waitForTimeout(500);
-  const option = page
-    .locator('.cdk-overlay-container, mat-option, [role="option"], [role="listbox"]')
-    .getByText(/^last 12 months$/i)
-    .first();
+  await trigger.click({ force: true });
+  await page.waitForTimeout(1000);
+
+  // Options use internal keys (e.g. "past12Months") not translated display labels
+  const overlay = page.locator('.cdk-overlay-container');
+  await overlay.waitFor({ state: 'visible', timeout: 5000 }).catch(() => {});
+  const option = overlay.getByText(/past12months|last\s*12\s*months/i).first();
   if (await option.count() > 0) {
     await option.click();
-  } else {
-    await page.getByText(/last 12 months/i).first().click().catch(() => {});
   }
   await page.waitForTimeout(2000);
 }
