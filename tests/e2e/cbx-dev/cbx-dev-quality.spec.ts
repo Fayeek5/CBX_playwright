@@ -14,6 +14,7 @@ const subModules = [
   'Inspection Checklists',
   'Audits',
   'Test Accreditation',
+  'Test Reports',
 ];
 
 for (const subModule of subModules) {
